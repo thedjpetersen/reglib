@@ -30,12 +30,17 @@ class Classes:
         login_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_ValLogin'
 
         #build our request and login to set the SESSID cookie
-        request = urllib2.Request(login_url, self.form_data, headers = self.header_values)
+        request = urllib2.Request(login_url, form_data, headers = self.header_values)
         response = self.opener.open(request)
 
 
-    def get_classes(self):
+    def get_grades(self):
+        #The transcript page url
+            trans_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskotrn.P_ViewTran'
+
         #set up correct header information
         self.header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskotrn.P_ViewTermTran'
         self.header_values['Origin'] = 'https://adminfo.ucsadm.oregonstate.edu'
         form_data = urllib.urlencode({'levl' : '', 'tprt' : 'WWW'})
+        request = urllib2.Request(trans_url, form_data, headers = self.header_values)
+        response = self.opener.open(request)
