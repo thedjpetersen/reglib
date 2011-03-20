@@ -1,7 +1,7 @@
 import urllib
 import urllib2
 import cookielib
-import parse_html
+import transcript 
 
 class Classes:
 
@@ -49,7 +49,7 @@ class Classes:
         response = self.opener.open(request)
         if response.headers['Set-Cookie']:
             html = response.read()
-            return parse_html.get_grades(html)
+            return transcript.Transcript(html)
         else:
             login()
 
