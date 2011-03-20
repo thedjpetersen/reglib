@@ -1,6 +1,7 @@
 import urllib
 import urllib2
 import cookielib
+import parse_html
 
 class Classes:
 
@@ -32,9 +33,11 @@ class Classes:
         #build our request and login to set the SESSID cookie
         request = urllib2.Request(login_url, form_data, headers = self.header_values)
         response = self.opener.open(request)
-        return response
+        if response.headers['Set-Cookie']:
+            return True
+        return False
 
-    def get_grades(self):
+    def get_transcript(self):
         #The transcript page url
         trans_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskotrn.P_ViewTran'
 
@@ -44,4 +47,9 @@ class Classes:
         form_data = urllib.urlencode({'levl' : '', 'tprt' : 'WWW'})
         request = urllib2.Request(trans_url, form_data, headers = self.header_values)
         response = self.opener.open(request)
-        return response 
+        if response.headers['Set-Cookie']:
+            html = response.read()
+            return parse_html.get_grades(html)
+        else:
+            login()
+
