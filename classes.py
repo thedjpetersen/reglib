@@ -53,3 +53,11 @@ class Classes:
         else:
             login()
 
+    def get_current_classes(self):
+        classes_list_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskfshd.P_CrseSchdDetl'
+        form_data = urllib.urlencode({'term_in' : '201103'})
+        self.header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_GenMenu?name=bmenu.P_RegMnu'
+
+        request = urllib2.Request(classes_list_url, form_data, headers=self.header_values)
+        response = self.opener.open(request)
+        return response
