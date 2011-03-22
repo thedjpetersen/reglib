@@ -28,3 +28,8 @@ def get_total_credits(original_html):
         if element.text_content() == 'Overall:':
             credits = float(element.getnext().getchildren()[0].text_content())
     return credits
+
+def get_current_term(original_html):
+    html = lxml.html.fromstring(original_html)
+    current_term = html.forms[1].getchildren()[0].value_options[0]
+    return current_term
