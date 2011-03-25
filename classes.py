@@ -22,6 +22,10 @@ class Classes:
         #login to set session cookie
         self.login()
 
+    def fix_login(self, command):
+        self.login()
+        eval("self." + command + "()")
+
     def login(self):
         #Set the referer to appear to be the www login page
         self.header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_WWWLogin'
@@ -48,11 +52,12 @@ class Classes:
         form_data = urllib.urlencode({'levl' : '', 'tprt' : 'WWW'})
         request = urllib2.Request(trans_url, form_data, headers = self.header_values)
         response = self.opener.open(request)
-        if response.headers['Set-Cookie']:
-            html = response.read()
-            return transcript.Transcript(html)
+        html = response.read()
+        if parse_html.get_page_title(html) != 'Login':
+            return html
+            #return transcript.Transcript(html)
         else:
-            login()
+            self.fix_login("get_transcript")
 
     def get_current_classes(self):
         classes_list_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskfshd.P_CrseSchdDetl'
