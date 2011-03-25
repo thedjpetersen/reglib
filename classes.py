@@ -64,8 +64,12 @@ class Classes:
             request = urllib2.Request(classes_list_url, headers = self.header_values)
             response = self.opener.open(request)
             html = response.read()
-            if parse_html.get_page_title(html) != 'Login':
-                current_term = parse_html.get_current_term(html)
+            title = parse_html.get_page_title(html)
+            if title != 'Login':
+                if title == 'Select Term ':
+                    current_term = parse_html.get_current_term(html)
+                else:
+                    return html
             else:
                 self.login()
                 continue
