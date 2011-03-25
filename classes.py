@@ -14,6 +14,7 @@ class Classes:
         #Set up the your identification to be posted when you login
         self.sid = sid
         self.pin = pin
+        self.login_number = 2
 
         #Set up a cookie jar to keep the cookies, to keep our session
         self.cj = cookielib.MozillaCookieJar()
@@ -21,10 +22,6 @@ class Classes:
         urllib2.install_opener(self.opener) 
         #login to set session cookie
         self.login()
-
-    def fix_login(self, command):
-        self.login()
-        eval("self." + command + "()")
 
     def login(self):
         #Set the referer to appear to be the www login page
@@ -43,21 +40,21 @@ class Classes:
         return False
 
     def get_transcript(self):
-        #The transcript page url
-        trans_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskotrn.P_ViewTran'
+        for i in range(self.login_number):
+            #The transcript page url
+            trans_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskotrn.P_ViewTran'
 
-        #set up correct header information
-        self.header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskotrn.P_ViewTermTran'
-        self.header_values['Origin'] = 'https://adminfo.ucsadm.oregonstate.edu'
-        form_data = urllib.urlencode({'levl' : '', 'tprt' : 'WWW'})
-        request = urllib2.Request(trans_url, form_data, headers = self.header_values)
-        response = self.opener.open(request)
-        html = response.read()
-        if parse_html.get_page_title(html) != 'Login':
-            return html
-            #return transcript.Transcript(html)
-        else:
-            self.fix_login("get_transcript")
+            #set up correct header information
+            self.header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskotrn.P_ViewTermTran'
+            self.header_values['Origin'] = 'https://adminfo.ucsadm.oregonstate.edu'
+            form_data = urllib.urlencode({'levl' : '', 'tprt' : 'WWW'})
+            request = urllib2.Request(trans_url, form_data, headers = self.header_values)
+            response = self.opener.open(request)
+            html = response.read()
+            if parse_html.get_page_title(html) != 'Login':
+                return transcript.Transcript(html)
+            else:
+                self.login()
 
     def get_current_classes(self):
         classes_list_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskfshd.P_CrseSchdDetl'
