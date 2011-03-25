@@ -4,7 +4,7 @@ import cookielib
 import parse_html
 import transcript 
 
-class Classes:
+class infosu:
 
     #Our header values for the login request
     #make sure that we look like a browser
