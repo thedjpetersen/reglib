@@ -57,16 +57,20 @@ class Classes:
                 self.login()
 
     def get_current_classes(self):
-        classes_list_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskfshd.P_CrseSchdDetl'
-        self.header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_GenMenu?name=bmenu.P_RegMnu'
+        for i in range(self.login_number):
+            classes_list_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskfshd.P_CrseSchdDetl'
+            self.header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_GenMenu?name=bmenu.P_RegMnu'
 
-        request = urllib2.Request(classes_list_url, headers = self.header_values)
-        response = self.opener.open(request)
-        html = response.read()
-        current_term = parse_html.get_current_term(html)
+            request = urllib2.Request(classes_list_url, headers = self.header_values)
+            response = self.opener.open(request)
+            html = response.read()
+            current_term = parse_html.get_current_term(html)
 
-        form_data = urllib.urlencode({'term_in' : current_term})
+            form_data = urllib.urlencode({'term_in' : current_term})
 
-        request = urllib2.Request(classes_list_url, form_data, headers=self.header_values)
-        response = self.opener.open(request)
-        return response
+            request = urllib2.Request(classes_list_url, form_data, headers=self.header_values)
+            response = self.opener.open(request)
+            if parse_html.get_page_title(html) != 'Login':
+                return response
+            else:
+                self.login()
