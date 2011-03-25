@@ -20,8 +20,7 @@ class Classes:
         self.cj = cookielib.MozillaCookieJar()
         self.opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cj), urllib2.HTTPHandler())
         urllib2.install_opener(self.opener) 
-        #login to set session cookie
-        self.login()
+        
 
     def login(self):
         #Set the referer to appear to be the www login page
@@ -69,7 +68,7 @@ class Classes:
                 if title == 'Select Term ':
                     current_term = parse_html.get_current_term(html)
                 else:
-                    return html
+                    return parse_html.get_current_classes(html)
             else:
                 self.login()
                 continue
@@ -79,4 +78,4 @@ class Classes:
             request = urllib2.Request(classes_list_url, form_data, headers=self.header_values)
             response = self.opener.open(request)
             html = response.read()
-            return html
+            return parse_html.get_current_classes(html)
