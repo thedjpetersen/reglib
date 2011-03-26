@@ -10,7 +10,7 @@ def get_grades(original_html):
     
     for element in table_elements:
         try:
-            term = element.find_class("fieldOrangetextbold")
+            term = element.find_class("fieldOrangetextbold")[0].text_content()
         except:
             pass
 
