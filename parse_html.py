@@ -96,6 +96,8 @@ def class_search(original_html):
     html = lxml.html.fromstring(original_html)
     table_element  = html.get_element_by_id('ctl00_ContentPlaceHolder1_SOCListUC1_gvOfferings')
     table_elements = table_element.getchildren()[1:]
+    elements_to_int = ['WL Cap', 'Weeks', 'CRN', 'WL Curr', 'WL Avail', 'Cr']
+
     classes = []
     
     row_headers = []
@@ -118,7 +120,15 @@ def class_search(original_html):
                     for inner_index, inner_element in enumerate(outer_element):
                         fields = inner_element.split(' ')
                         content[outer_index][inner_index] = {'Department':str(fields[0]), 'Course Number':int(fields[1])}
+            if row_headers[index] in elements_to_int:
+                content = int(content)
 
+            if row_headers[index]=='Day/Time/Date':
+                fields = content.split(' ')
+                days = fields[0]
+                time = fields[1][:9]
+                dates = fields[1][8:]
+                content = {"Days":days, "Time":time, "Dates":dates}
             one_class[row_headers[index]] = content
         classes.append(one_class)
 
