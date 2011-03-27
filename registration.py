@@ -81,11 +81,23 @@ class infosu(object):
             html = response.read()
             return schedule.Schedule(html)
 
-    def class_search(self, dep, num):
+    def class_search(self, dep, num, term=''):
         class_url = "http://catalog.oregonstate.edu/CourseDetail.aspx?Columns=abcdfghijklmnopqrstuvwxyz&SubjectCode=" + dep + "&CourseNumber=" + num + "&Campus=corvallis"
         
         response = urllib2.urlopen(class_url)
         if response.url == 'http://catalog.oregonstate.edu/DOE.aspx?Entity=Course':
             return "Class not found"
         html = response.read()
-        return parse_html.class_search(html)
+        classes = parse_html.class_search(html)
+        if term is '':
+            return classes
+        else:
+            list_of_classes = []
+            for each_class in classes:
+                if each_class['Term'] == term:
+                    list_of_classes.append(each_class)
+                if len(list_of_classes) is not 0:
+                    return list_of_classes
+                else:
+                    return "No classes offered for that term"
+
