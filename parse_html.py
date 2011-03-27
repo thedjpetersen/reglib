@@ -1,4 +1,5 @@
 import lxml.html
+import re
 
 def get_grades(original_html):
     html = lxml.html.fromstring(original_html)
@@ -108,9 +109,16 @@ def class_search(original_html):
         for index, cell in enumerate(cells):
             content = cell.text_content().strip()
 
-            if row_headers[index] = 'Restrictions':
-                content = content.split(':')[1].lstrip()
-            
+            if row_headers[index] == 'Restrictions':
+                content = content.split(':')[1]
+                content = (' ').join(content.rsplit()).replace(u' College\xc2 Limitations', '').replace('(', '').replace(')','').split(' and ')
+                for inner_index, block in enumerate(content):
+                    content[inner_index] = block.split(' or ')
+                for outer_index, outer_element in enumerate(content):
+                    for inner_index, inner_element in enumerate(outer_element):
+                        fields = inner_element.split(' ')
+                        content[outer_index][inner_index] = {'Department':str(fields[0]), 'Course Number':int(fields[1])}
+
             one_class[row_headers[index]] = content
         classes.append(one_class)
 
