@@ -3,8 +3,9 @@ import urllib2
 import cookielib
 import parse_html
 import transcript 
+import schedule
 
-class infosu:
+class infosu(object):
 
     #Our header values for the login request
     #make sure that we look like a browser
@@ -55,7 +56,7 @@ class infosu:
             else:
                 self.login()
 
-    def get_current_classes(self):
+    def get_schedule(self):
         for i in range(self.login_number):
             classes_list_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskfshd.P_CrseSchdDetl'
             self.header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_GenMenu?name=bmenu.P_RegMnu'
@@ -68,7 +69,7 @@ class infosu:
                 if title == 'Select Term ':
                     current_term = parse_html.get_current_term(html)
                 else:
-                    return parse_html.get_current_classes(html)
+                    return schedule.Schedule(html)
             else:
                 self.login()
                 continue
@@ -78,4 +79,13 @@ class infosu:
             request = urllib2.Request(classes_list_url, form_data, headers=self.header_values)
             response = self.opener.open(request)
             html = response.read()
-            return parse_html.get_current_classes(html)
+            return schedule.Schedule(html)
+
+    def class_search(self, dep, num):
+        class_url = "http://catalog.oregonstate.edu/CourseDetail.aspx?Columns=abcdfghijklmnopqrstuvwxyz&SubjectCode=" + dep + "&CourseNumber=" + num + "&Campus=corvallis"
+        
+        response = urllib2.urlopen(class_url)
+        if response.url == 'http://catalog.oregonstate.edu/DOE.aspx?Entity=Course':
+            return "Class not found"
+        html = response.read()
+        return parse_html.class_search(html)

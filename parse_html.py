@@ -90,3 +90,28 @@ def get_current_classes(original_html):
         total_classes[loop_index] = cl
 
     return total_classes
+
+def class_search(original_html):
+    html = lxml.html.fromstring(original_html)
+    table_element  = html.get_element_by_id('ctl00_ContentPlaceHolder1_SOCListUC1_gvOfferings')
+    table_elements = table_element.getchildren()[1:]
+    classes = []
+    
+    row_headers = []
+
+    for header in table_element.getchildren()[0].getchildren():
+        row_headers.append(header.text_content())
+
+    for row in table_elements:
+        one_class = {}
+        cells = row.getchildren()
+        for index, cell in enumerate(cells):
+            content = cell.text_content().strip()
+
+            if row_headers[index] = 'Restrictions':
+                content = content.split(':')[1].lstrip()
+            
+            one_class[row_headers[index]] = content
+        classes.append(one_class)
+
+    return classes
