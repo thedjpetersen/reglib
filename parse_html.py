@@ -133,3 +133,14 @@ def class_search(original_html):
         classes.append(one_class)
 
     return classes
+
+    def get_major_requirements(original_html):
+        html = lxml.html.fromstring(original_html)
+        html = html.get_element_by_id('ctl00_ContentPlaceHolder1_lblRequirementHTML')
+        elements = []
+        for element in html.getchildren():
+            if element.tag == 'br' and element.tail is not None:
+                elements.append(element.tail)
+            if element.tag == 'sup' and element.tail is not None:
+                elements.append(element.tail)
+        return elements

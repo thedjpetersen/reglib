@@ -101,3 +101,7 @@ class infosu(object):
                 else:
                     return "No classes offered for that term"
 
+    def get_major_requirements(self, url):
+        response = urllib2.urlopen(class_url)
+        html = response.read()
+        return parse_html.get_major_requirements(html)
