@@ -119,7 +119,7 @@ def class_search(original_html):
                 for outer_index, outer_element in enumerate(content):
                     for inner_index, inner_element in enumerate(outer_element):
                         fields = inner_element.split(' ')
-                        content[outer_index][inner_index] = {'Department':str(fields[0]), 'Course Number':int(fields[1])}
+                        content[outer_index][inner_index] = {'Department':str(fields[0]), 'Course Number':fields[1]}
             #if row_headers[index] in elements_to_int:
                 #content = int(content)
 
