@@ -120,8 +120,8 @@ def class_search(original_html):
                     for inner_index, inner_element in enumerate(outer_element):
                         fields = inner_element.split(' ')
                         content[outer_index][inner_index] = {'Department':str(fields[0]), 'Course Number':int(fields[1])}
-            if row_headers[index] in elements_to_int:
-                content = int(content)
+            #if row_headers[index] in elements_to_int:
+                #content = int(content)
 
             if row_headers[index]=='Day/Time/Date':
                 fields = content.split(' ')
@@ -135,12 +135,29 @@ def class_search(original_html):
     return classes
 
 def get_major_requirements(original_html):
-	html = lxml.html.fromstring(original_html)
-	html = html.get_element_by_id('ctl00_ContentPlaceHolder1_lblRequirementHTML')
-	elements = []
-	for element in html.getchildren():
-	    if element.tag == 'br' and element.tail is not None:
-		elements.append(element.tail)
-	    if element.tag == 'sup' and element.tail is not None:
-		elements.append(element.tail)
-	return elements
+    html = lxml.html.fromstring(original_html)
+    html = html.get_element_by_id('ctl00_ContentPlaceHolder1_lblRequirementHTML')
+    elements = []
+    for element in html.getchildren():
+        if element.tag == 'br' and element.tail is not None:
+            elements.append(element.tail)
+        if element.tag == 'sup' and element.tail is not None:
+            elements.append(element.tail)
+    return elements
+
+def add_class(original_html, crn, crn2=''):
+    html = lxml.html.fromstring(original_html)
+    html.get_element_by_id("crn_id1").value = crn
+    html.get_element_by_id("crn_id2").value = crn2
+    form = html.forms[1]
+    #return form.form_values().append(('REG_BTN', 'Submit Changes'))
+    values = form.form_values()
+    values.append(('REG_BTN', 'Submit Changes'))
+    return values 
+
+def add_class_has_errors(original_html):
+    html = lxml.html.fromstring(original_html)
+    if html.find_class("errortext"):
+        return False
+    return True
+

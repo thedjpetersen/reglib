@@ -106,28 +106,38 @@ class infosu(object):
         html = response.read()
         return parse_html.get_major_requirements(html)
 
-    def add_class(self, crn):
-		for i in range(self.login_number):
-			add_drop_page_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskfreg.P_AltPin'
-			self.header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_GenMenu?name=bmenu.P_RegMnu'
-			request = urllib2.Request(add_drop_page_url, headers = self.header_values)
-			response = self.opener.open(request)
-				
-			html = response.read()
-			title = parse_html.get_page_title(html)
-			if title != 'Login':
-				if title == 'Select Term ':
-					current_term = parse_html.get_current_term(html)
-				else:
-					return html 
-			else:
-				self.login()
-				continue
+    def add_class(self, crn, crn2=''):
+        for i in range(self.login_number):
+            add_drop_page_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskfreg.P_AltPin'
+            self.header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_GenMenu?name=bmenu.P_RegMnu'
+            request = urllib2.Request(add_drop_page_url, headers = self.header_values)
+            response = self.opener.open(request)
+            
+            html = response.read()
+            title = parse_html.get_page_title(html)
+            form_data = ''
+            if title != 'Login':
+                if title == 'Select Term ':
+                    current_term = parse_html.get_current_term(html)
+                    form_data = urllib.urlencode({'term_in' : current_term})
+            else:
+                self.login()
+                continue
 
-			form_data = urllib.urlencode({'term_in' : current_term})
+            request = urllib2.Request(add_drop_page_url, form_data, headers=self.header_values)
+            response = self.opener.open(request)
+            html = response.read()
+            
+            values = parse_html.add_class(html, crn, crn2)
+           
+            form_data = urllib.urlencode(values)
+            self.header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskfreg.P_AltPin'
+            submit_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwckcoms.P_Regs'
 
-			request = urllib2.Request(add_drop_page_url, form_data, headers=self.header_values)
-			response = self.opener.open(request)
-			html = response.read()
-			return html 
+            request = urllib2.Request(submit_url, form_data, headers=self.header_values)
+            response = self.opener.open(request)
+
+            html = response.read()
+            
+            return parse_html.add_class_has_errors(html) 
 
