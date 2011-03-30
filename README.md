@@ -27,13 +27,17 @@ The `get_transcript` function fetches a list of classes you have taken and the t
 	transcript.credits #Print out how many credits you have
 
 ### Schedule
-The `get_schedule` function fetches what classes you are current taking using the `get_classes` function
-	schedule = registration_class.get_schedule(test.get_classes())
+The `get_schedule` function fetches what classes you are current taking 
+	schedule = registration_class.get_schedule()
 	schedule.current_classes #Array of classes and details of classes you are taking
 
 ### Searching
 The `class_search` function searches for a class using the Department name and the Course number.
 	registration_class.class_search('cs', '261')
+
+### Adding a class
+The `add_class` function takes a up to CRNs and tries to add the class, returns `True` or `False`
+	registration_class.add_class('54034')
 
 ### Major Requirements(not working yet)
 The `get_major_requirements` function gets a list of classes that you need to take in order to graduate
