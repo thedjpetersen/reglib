@@ -21,6 +21,9 @@ Instantiate the class
 	registration_class = registration.infosu(sid, pin)
 
 ### Transcript
+The 'get_transcript function fetches a list of classes you have taken and the total credits you have and puts them in a class.
 	transcript = registration_class.get_transcript
-	transcript.grades
-	transcript.credits
+	transcript.grades  #Print out a list of classes you have taken with grades
+	transcript.credits #Print out how many credits you have
+
+### Schedule
