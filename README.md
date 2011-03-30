@@ -27,7 +27,7 @@ The `get_transcript` function fetches a list of classes you have taken and the t
 	transcript.credits #Print out how many credits you have
 
 ### Schedule
-The `get_schedule` function fetches what classes you are current taking using the `get_classes function
+The `get_schedule` function fetches what classes you are current taking using the `get_classes` function
 	schedule = registration_class.get_schedule(test.get_classes())
 	schedule.current_classes #Array of classes and details of classes you are taking
 
