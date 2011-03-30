@@ -49,7 +49,7 @@ def get_page_title(original_html):
 def get_current_classes(original_html):
     html = lxml.html.fromstring(original_html)
     classes = []
-    total_classes = {}
+    total_classes = [] 
     elements = html.find_class("datadisplaytable")
     for index in range(0, len(elements), 2):
         classes.append([elements[index], elements[index+1]])
@@ -83,12 +83,12 @@ def get_current_classes(original_html):
         
         cl['Type'] = class_elements[0]
         cl['Time'] = class_elements[1]
-        cl['Days'] = class_elements[2]
+        cl['Days'] = list(class_elements[2])
         cl['Location'] = {'Building' : (' ').join(class_elements[3].split(' ')[:-1]), 'Room': class_elements[3].split(' ')[-1]}
         cl['Duration'] = class_elements[4]
         cl['Class Type'] = class_elements[5]
         
-        total_classes[loop_index] = cl
+        total_classes.append(cl)
 
     return total_classes
 

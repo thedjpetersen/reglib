@@ -26,6 +26,13 @@ The `get_transcript` function fetches a list of classes you have taken and the t
 	transcript.grades  #Print out a list of classes you have taken with grades
 	transcript.credits #Print out how many credits you have
 
+You can use the transcript to check if you have already taken a class or not.
+	transcript.has_class('cs', '162')
+	transcript.has_passed_class('cs', '162')
+
+Or you can use it to see your grade distribution
+	transcript.grade_distribution()
+
 ### Schedule
 The `get_schedule` function fetches what classes you are current taking 
 	schedule = registration_class.get_schedule()

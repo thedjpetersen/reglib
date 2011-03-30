@@ -33,7 +33,5 @@ class Transcript(object):
             seen[item] = 1
             result.append(item)
         
-        for item in result:
-            print item + ':' + str(grades_array.count(item))
-
+        return result
 
