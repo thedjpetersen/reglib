@@ -21,20 +21,20 @@ Instantiate the class
 	registration_class = registration.infosu(sid, pin)
 
 ### Transcript
-The `get_transcript function fetches a list of classes you have taken and the total credits you have and puts them in a class.
+The `get_transcript` function fetches a list of classes you have taken and the total credits you have and puts them in a class.
 	transcript = registration_class.get_transcript()
 	transcript.grades  #Print out a list of classes you have taken with grades
 	transcript.credits #Print out how many credits you have
 
 ### Schedule
-The `get_schedule function fetches what classes you are current taking using the `get_classes function
+The `get_schedule` function fetches what classes you are current taking using the `get_classes function
 	schedule = registration_class.get_schedule(test.get_classes())
 	schedule.current_classes #Array of classes and details of classes you are taking
 
 ### Searching
-The `class_search function searches for a class using the Department name and the Course number.
+The `class_search` function searches for a class using the Department name and the Course number.
 	registration_class.class_search('cs', '261')
 
 ### Major Requirements(not working yet)
-The `get_major_requirements function gets a list of classes that you need to take in order to graduate
+The `get_major_requirements` function gets a list of classes that you need to take in order to graduate
 	registration_class.get_major_requirements()
