@@ -7,7 +7,7 @@ def get_grades(original_html):
     
     classes_elements = []
     classes_term = []
-    classes = {}
+    classes = []
     
     for element in table_elements:
         try:
@@ -25,7 +25,7 @@ def get_grades(original_html):
         for subelement in element.getchildren():
             text.append(subelement.text_content())
         
-        classes[index] = {'Name' : text[2], 'Department' : text[0], 'Course Number' : text[1], 'Credits' : float(text[3]), 'Grade' : text[4], 'Term' : classes_term[index]}
+        classes.append({'Name' : text[2], 'Department' : text[0], 'Course Number' : text[1], 'Credits' : float(text[3]), 'Grade' : text[4], 'Term' : classes_term[index]})
 
     return classes
 
