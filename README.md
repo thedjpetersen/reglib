@@ -8,12 +8,17 @@ Example
 
 Working with the library is just instantiating the class and calling it's member functions
 
-First import the module
+1. First import the module
 	import registration
 
-Set up variables with your student id and password for the registration website.
+2. Set up variables with your student id and password for the registration website.
 	sid = '930608334'
 	pin = '431254'
 
-Instantiate the class
+3. Instantiate the class
 	registration_class = registration.infosu(sid, pin)
+
+4. Call function you need.
+	transcript = registration_class.get_transcript
+	transcript.grades
+	transcript.credits
