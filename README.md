@@ -37,7 +37,7 @@ Or you can use it to see your grade distribution
 The `get_schedule` function fetches what classes you are current taking 
 	schedule = registration_class.get_schedule()
 	schedule.current_classes #Array of classes and details of classes you are taking
-	schedule.scheudle	 #Array of your weekly schedule
+	schedule.schedule	 #Array of your weekly schedule
 
 ### Searching
 The `class_search` function searches for a class using the Department name and the Course number.
