@@ -111,7 +111,7 @@ def class_search(original_html):
         for index, cell in enumerate(cells):
             content = cell.text_content().strip()
 
-            if row_headers[index] == 'Restrictions':
+            if row_headers[index] == 'Restrictions' and content != '':
                 content = content.split(':')[1]
                 content = (' ').join(content.rsplit()).replace(u' College\xc2 Limitations', '').replace('(', '').replace(')','').split(' and ')
                 for inner_index, block in enumerate(content):
