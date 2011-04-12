@@ -9,7 +9,7 @@ class infosu(object):
 
     #Our header values for the login request
     #make sure that we look like a browser
-    header_values =  {'User-Agent' : 'Internet Explorer', 'Accept' : 'application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5', 'Accept-Charset' : 'ISO-8859-1,utf-8;q=0.7,*;q=0.3', 'Accept-Encoding' : 'gzip,deflate,sdch', 'Accept-Language' : 'en-US,en;q=0.8', 'Cache-Control' : 'max-age=0', 'Connection' : 'keep-alive', 'Host' : 'adminfo.ucsadm.oregonstate.edu', 'Referer' : 'https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_WWWLogin'}
+    header_values =  {'User-Agent' : 'Mozilla/5.0 (X11; U; Linux i686 (x86_64); en-US; rv:1.9.2.16) Gecko/20110319 Firefox/3.6.16', 'Accept' : 'application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5', 'Accept-Charset' : 'ISO-8859-1,utf-8;q=0.7,*;q=0.3', 'Accept-Encoding' : 'gzip,deflate,sdch', 'Accept-Language' : 'en-US,en;q=0.8', 'Cache-Control' : 'max-age=0', 'Connection' : 'keep-alive', 'Host' : 'adminfo.ucsadm.oregonstate.edu', 'Referer' : 'https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_WWWLogin'}
     
     def __init__(self, sid, pin):
         #Set up the your identification to be posted when you login
@@ -22,6 +22,10 @@ class infosu(object):
         self.opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cj), urllib2.HTTPHandler())
         urllib2.install_opener(self.opener) 
         
+        self.login()    #Set the setid cookie
+        successful_login = self.login()
+
+        if not successful_login: raise Exception("Invalid credentials")
 
     def login(self):
         #Set the referer to appear to be the www login page
@@ -35,7 +39,7 @@ class infosu(object):
         #build our request and login to set the SESSID cookie
         request = urllib2.Request(login_url, form_data, headers = self.header_values)
         response = self.opener.open(request)
-        if response.headers['Set-Cookie']:
+        if len(response.read())<1000:
             return True
         return False
 
@@ -79,9 +83,12 @@ class infosu(object):
             request = urllib2.Request(classes_list_url, form_data, headers=self.header_values)
             response = self.opener.open(request)
             html = response.read()
-            return schedule.Schedule(html)
+            self.schedule = schedule.Schedule(html)
 
-    def class_search(self, dep, num, term=''):
+    def update_schedule(self):
+        self.get_schedule()
+
+    def class_search(self, dep, num, term='', non_conflicting=False):
         class_url = "http://catalog.oregonstate.edu/CourseDetail.aspx?Columns=abcdfghijklmnopqrstuvwxyz&SubjectCode=" + dep + "&CourseNumber=" + num + "&Campus=corvallis"
         
         response = urllib2.urlopen(class_url)
@@ -100,6 +107,9 @@ class infosu(object):
                     return list_of_classes
                 else:
                     return "No classes offered for that term"
+
+    def conflict(self, classes):
+        return
 
     def get_major_requirements(self, url):
         response = urllib2.urlopen(url)
