@@ -111,10 +111,44 @@ class infosu(object):
     def conflict(self, classes):
         return
 
-    def get_major_requirements(self, url):
-        response = urllib2.urlopen(url)
+    def get_major_requirements(self):
+        form_page = "https://adminfo.ucsadm.oregonstate.edu/prod/bwykg_dwssbstudent.P_SignOn"
+        self.header_values['Referer'] = "https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_GenMenu?name=bmenu.P_AdminMnu"
+
+        request = urllib2.Request(form_page, headers = self.header_values)
+        response = self.opener.open(request)
         html = response.read()
-        return parse_html.get_major_requirements(html)
+        form_list = parse_html.mydegrees_redirect_form(html)
+        form_data = urllib.urlencode(form_list)
+
+        mydegrees_url = "https://mydegrees.oregonstate.edu/IRISLink.cgi"
+        self.header_values['Referer'] = "https://adminfo.ucsadm.oregonstate.edu/prod/bwykg_dwssbstudent.P_SignOn"
+        
+        request = urllib2.Request(mydegrees_url, form_data, headers= self.header_values)
+        response = self.opener.open(request)
+
+        self.header_values['Referer'] = "https://mydegrees.oregonstate.edu/SD_LoadFrameForm.html"
+
+        form_data = urllib.urlencode({'SERVICE':'SCRIPTER','SCRIPT':'SD2STUCON'})
+        #phase one give your data bitch
+        request = urllib2.Request(mydegrees_url, form_data, headers = self.header_values)
+        response = self.opener.open(request)
+        html = response.read() #final form is in html.forms[7].form_values()
+
+        form_list = parse_html.mydegrees_form_mangler(html)
+        form_data = urllib.urlencode(form_list)
+        request = urllib2.Request(mydegrees_url, form_data, headers= self.header_values)
+        response = self.opener.open(request)
+        html = response.read()
+
+        form_list = parse_html.mydegrees_final_form(html)
+        form_data = urllib.urlencode(form_list)
+        request = urllib2.Request(mydegrees_url, form_data, headers= self.header_values) 
+
+        response = self.opener.open(request)
+        html = response.read()
+        return html
+        #return parse_html.get_major_requirements(html)
 
     def add_class(self, crn, crn2=''):
         for i in range(self.login_number):
