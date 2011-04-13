@@ -163,7 +163,7 @@ def get_major_requirements(original_xml):
     audit = tree.getchildren()[0]
     return audit
 
-    def add_class(original_html, crn, crn2=''):
+def add_class(original_html, crn, crn2=''):
     html = lxml.html.fromstring(original_html)
     html.get_element_by_id("crn_id1").value = crn
     html.get_element_by_id("crn_id2").value = crn2
