@@ -26,6 +26,8 @@ class infosu(object):
         successful_login = self.login()
 
         if not successful_login: raise Exception("Invalid credentials")
+        self.get_schedule()
+        self.get_transcript()
 
     def login(self):
         #Set the referer to appear to be the www login page
@@ -146,9 +148,9 @@ class infosu(object):
         request = urllib2.Request(mydegrees_url, form_data, headers= self.header_values) 
 
         response = self.opener.open(request)
-        html = response.read()
-        return html
-        #return parse_html.get_major_requirements(html)
+        xml = response.read()
+        
+        return parse_html.get_major_requirements(xml)
 
     def add_class(self, crn, crn2=''):
         for i in range(self.login_number):

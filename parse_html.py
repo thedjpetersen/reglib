@@ -1,4 +1,5 @@
 import lxml.html
+from lxml import etree
 import re
 
 def get_grades(original_html):
@@ -157,18 +158,12 @@ def mydegrees_final_form(original_html):
 
     return form
 
-def get_major_requirements(original_html):
-    html = lxml.html.fromstring(original_html)
-    html = html.get_element_by_id('ctl00_ContentPlaceHolder1_lblRequirementHTML')
-    elements = []
-    for element in html.getchildren():
-        if element.tag == 'br' and element.tail is not None:
-            elements.append(element.tail)
-        if element.tag == 'sup' and element.tail is not None:
-            elements.append(element.tail)
-    return elements
+def get_major_requirements(original_xml):
+    tree = etree.fromstring(original_xml)
+    audit = tree.getchildren()[0]
+    return audit
 
-def add_class(original_html, crn, crn2=''):
+    def add_class(original_html, crn, crn2=''):
     html = lxml.html.fromstring(original_html)
     html.get_element_by_id("crn_id1").value = crn
     html.get_element_by_id("crn_id2").value = crn2
