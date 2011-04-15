@@ -163,6 +163,14 @@ def get_major_requirements(original_xml):
     audit = tree.getchildren()[0]
     return audit
 
+def major_requirements(audit):
+    class audit:
+        audit_information = dict(audit.xpath('//AuditHeader')[0].items())
+        rules = []
+        for rule in audit.xpath('//Rule'):
+            rules.append(dict(rule.items()))
+    return audit
+
 def add_class(original_html, crn, crn2=''):
     html = lxml.html.fromstring(original_html)
     html.get_element_by_id("crn_id1").value = crn
