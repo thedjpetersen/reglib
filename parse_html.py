@@ -1,6 +1,6 @@
 import lxml.html
 from lxml import etree
-import re
+from datetime import datetime
 
 def get_grades(original_html):
     html = lxml.html.fromstring(original_html)
@@ -83,7 +83,9 @@ def get_current_classes(original_html):
             class_elements.append(element.text_content())
         
         cl['Type'] = class_elements[0]
-        cl['Time'] = class_elements[1]
+        cl['Time'] = class_elements[1].split(' - ')
+        for index, time in enumerate(cl['Time']):
+            cl['Time'][index] = datetime.strptime(time, '%I:%M %p').strftime('%H:%M')
         cl['Days'] = list(class_elements[2])
         cl['Location'] = {'Building' : (' ').join(class_elements[3].split(' ')[:-1]), 'Room': class_elements[3].split(' ')[-1]}
         cl['Duration'] = class_elements[4]
@@ -126,10 +128,18 @@ def class_search(original_html):
 
             if row_headers[index]=='Day/Time/Date':
                 fields = content.split(' ')
-                days = fields[0]
-                time = fields[1][:9]
-                dates = fields[1][8:]
-                content = {"Days":days, "Time":time, "Dates":dates}
+                days = list(fields[0])
+                try:
+                    times = fields[1][:9].split('-')
+                    for index, time in enumerate(times):
+                        times[index] = time[:2] + ':' + time[2:]
+                except:
+                    times = ''
+                try:
+                    dates = fields[1][8:]
+                except:
+                    dates = ''
+                content = {"Days":days, "Time":times, "Dates":dates}
             one_class[row_headers[index]] = content
         classes.append(one_class)
 
@@ -166,9 +176,19 @@ def get_major_requirements(original_xml):
 def major_requirements(audit):
     class audit:
         audit_information = dict(audit.xpath('//AuditHeader')[0].items())
+        degree_data = dict(audit.xpath('//DegreeData')[0].items())
         rules = []
+        completed_classes = []
+        more_audit_info = []
+
         for rule in audit.xpath('//Rule'):
             rules.append(dict(rule.items()))
+        for each_class in audit.xpath('//Class'):
+            completed_classes.append(dict(each_class.items()))
+        for report in audit.xpath('//Report')[1:]:
+            more_audit_info.append(dict(report.items()))
+        for custom_tag in audit.xpath('//Custom'):
+            more_audit_info.append(dict(report.items()))
     return audit
 
 def add_class(original_html, crn, crn2=''):

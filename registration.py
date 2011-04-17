@@ -73,14 +73,14 @@ class infosu(object):
             title = parse_html.get_page_title(html)
             if title != 'Login':
                 if title == 'Select Term ':
-                    current_term = parse_html.get_current_term(html)
+                    self.current_term = parse_html.get_current_term(html)
                 else:
                     return schedule.Schedule(html)
             else:
                 self.login()
                 continue
 
-            form_data = urllib.urlencode({'term_in' : current_term})
+            form_data = urllib.urlencode({'term_in' : self.current_term})
 
             request = urllib2.Request(classes_list_url, form_data, headers=self.header_values)
             response = self.opener.open(request)
@@ -90,7 +90,7 @@ class infosu(object):
     def update_schedule(self):
         self.get_schedule()
 
-    def class_search(self, dep, num, term='', non_conflicting=False):
+    def class_search(self, dep, num, term=''):
         class_url = "http://catalog.oregonstate.edu/CourseDetail.aspx?Columns=abcdfghijklmnopqrstuvwxyz&SubjectCode=" + dep + "&CourseNumber=" + num + "&Campus=corvallis"
         
         response = urllib2.urlopen(class_url)
@@ -110,8 +110,41 @@ class infosu(object):
                 else:
                     return "No classes offered for that term"
 
-    def conflict(self, classes):
-        return
+    def class_search_schedule(self, dep, num):
+        terms = {'01':'F', '02':'W', '03':'Sp', '04':'Su'}
+        term = terms[self.current_term[-2:]] + self.current_term[2:4]
+    
+        search_results = self.class_search(dep, num, term)
+        if type(search_results) is str:
+            return search_results
+        
+        available_classes = []
+
+        for result in search_results:
+            flag = False
+            if result['Avail'] == '0':
+                print "Full class"
+                continue
+            result_days = result['StartDate']['Days']
+            result_times = result['StartDate']['Time']
+            for current_class in self.schedule.current_classes:
+                curr_days = current_class['Days']
+                curr_time = current_class['Time']
+                if(set(result_days).intersection(curr_days)):
+                    if self.conflict(result_times, curr_time): 
+                        print ('-').join(result_times) + " conflicts with " + ('-').join(curr_time)
+                        flag = True
+                    else:
+                        print ('-').join(result_times) + " does not conflict with " + ('-').join(curr_time)
+            if not flag:
+                available_classes.append(result)
+
+        return available_classes
+
+    def conflict(self, time, time1):
+        if (time[0] >= time1[0] and time[0] <= time1[1]) or (time[1] >= time1[0] and time[1] <= time1[1]):
+            return True
+        return False
 
     def get_major_requirements(self):
         form_page = "https://adminfo.ucsadm.oregonstate.edu/prod/bwykg_dwssbstudent.P_SignOn"
@@ -164,7 +197,7 @@ class infosu(object):
             form_data = ''
             if title != 'Login':
                 if title == 'Select Term ':
-                    current_term = parse_html.get_current_term(html)
+                    self.current_term = parse_html.get_current_term(html)
                     form_data = urllib.urlencode({'term_in' : current_term})
             else:
                 self.login()
