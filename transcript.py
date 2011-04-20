@@ -27,11 +27,11 @@ class Transcript(object):
             grades_array.sort()
         
         seen = {}
-        result = []
         for item in grades_array:
-            if item in seen: continue
-            seen[item] = 1
-            result.append(item)
+            if not item in seen: 
+                seen[item] = 1
+                continue
+            seen[item] += 1
         
-        return result
+        return seen
 
