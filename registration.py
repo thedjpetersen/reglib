@@ -58,7 +58,7 @@ class infosu(object):
             response = self.opener.open(request)
             html = response.read()
             if parse_html.get_page_title(html) != 'Login':
-                return transcript.Transcript(html)
+                self.transcript = transcript.Transcript(html)
             else:
                 self.login()
 
@@ -122,7 +122,7 @@ class infosu(object):
 
         for result in search_results:
             flag = False
-            if result['Avail'] == '0':
+            if result['Avail'] <= '0':
                 print "Full class"
                 continue
             result_days = result['StartDate']['Days']
