@@ -13,9 +13,9 @@ class infosu(object):
     
     def __init__(self, sid, pin):
         #Set up the your identification to be posted when you login
-        self.sid = sid
-        self.pin = pin
-        self.login_number = 2
+        self.sid = sid      #this is our student id number
+        self.pin = pin      #this is our student pin
+        self.login_number = 2       #this variable will be used when we are trying to login
 
         #Set up a cookie jar to keep the cookies, to keep our session
         self.cj = cookielib.MozillaCookieJar()
@@ -24,10 +24,11 @@ class infosu(object):
         
         self.login()    #Set the setid cookie
         successful_login = self.login()
-
+        
+        #If our users credentials were not correct raise an exception to tell them
         if not successful_login: raise Exception("Invalid credentials")
-        self.get_schedule()
-        self.get_transcript()
+        self.get_schedule()     #We retrieve our schedule
+        self.get_transcript()   #We retrieve our transcript
 
     def login(self):
         #Set the referer to appear to be the www login page
@@ -41,12 +42,18 @@ class infosu(object):
         #build our request and login to set the SESSID cookie
         request = urllib2.Request(login_url, form_data, headers = self.header_values)
         response = self.opener.open(request)
+        
+        #Test to make sure that our response is not a login failure page
+        #Right now testing against length of response, should test against 
+        #page title eventually
         if len(response.read())<1000:
             return True
         return False
 
+    # This function fetches the transcript page and parses it
+    # It sets the classes transcript variable to the transcript class
     def get_transcript(self):
-        for i in range(self.login_number):
+        for i in range(self.login_number):  #If we are not logged in we will loop around again
             #The transcript page url
             trans_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskotrn.P_ViewTran'
 
@@ -58,10 +65,12 @@ class infosu(object):
             response = self.opener.open(request)
             html = response.read()
             if parse_html.get_page_title(html) != 'Login':
+                # We set the transcript variable to a instance of the transcript class
                 self.transcript = transcript.Transcript(html)
             else:
                 self.login()
 
+    # Function to set our schedule variable
     def get_schedule(self):
         for i in range(self.login_number):
             classes_list_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskfshd.P_CrseSchdDetl'
@@ -75,7 +84,7 @@ class infosu(object):
                 if title == 'Select Term ':
                     self.current_term = parse_html.get_current_term(html)
                 else:
-                    return schedule.Schedule(html)
+                    self.schedule = schedule.Schedule(html)
             else:
                 self.login()
                 continue
@@ -87,9 +96,8 @@ class infosu(object):
             html = response.read()
             self.schedule = schedule.Schedule(html)
 
-    def update_schedule(self):
-        self.get_schedule()
-
+    # This function searches for classes
+    # It can take a term as a parameter as well
     def class_search(self, dep, num, term=''):
         class_url = "http://catalog.oregonstate.edu/CourseDetail.aspx?Columns=abcdfghijklmnopqrstuvwxyz&SubjectCode=" + dep + "&CourseNumber=" + num + "&Campus=corvallis"
         
