@@ -20,35 +20,61 @@ Set up variables with your student id and password for the registration website.
 	pin = '431254'
 
 Instantiate the class
+
 	registration_class = registration.infosu(sid, pin)
 
 ### Transcript
-The `get_transcript` function fetches a list of classes you have taken and the total credits you have and puts them in a class.
-	transcript = registration_class.get_transcript()
-	transcript.grades  #Print out a list of classes you have taken with grades
-	transcript.credits #Print out how many credits you have
+
+When the `registration_class` is instantiated it fetches the transcript access it like this:
+
+	registration_class.transcript
+
+The `get_transcript` function updates the transcript
+
+	registration_class.get_transcript()
+	registration_class.transcript.grades  #Print out a list of classes you have taken with grades
+	registration.transcript.credits #Print out how many credits you have
 
 You can use the transcript to check if you have already taken a class or not.
+
 	transcript.has_class('cs', '162')
 	transcript.has_passed_class('cs', '162')
 
 Or you can use it to see your grade distribution
+
 	transcript.grade_distribution()
 
 ### Schedule
-The `get_schedule` function fetches what classes you are current taking 
-	schedule = registration_class.get_schedule()
+
+When the `registration_class` object is instantiated it fetches your current schedule
+
+	registration_class.schedule
+	registration_class.schedule.current_classes
+	registration_class.schedule.schedule #get dictionary of days of the week
+
+The `get_schedule` function updates the schedule that your `registration_class` objects has 
+
+	registration_class.get_schedule()
 	schedule.current_classes #Array of classes and details of classes you are taking
 	schedule.schedule	 #Array of your weekly schedule
 
 ### Searching
 The `class_search` function searches for a class using the Department name and the Course number.
+
 	registration_class.class_search('cs', '261')
+
+Or you can search for a class that does not conflict with your current schedule
+
+	registration_class.class_search_schedule('cs', '261')
 
 ### Adding a class
 The `add_class` function takes a up to CRNs and tries to add the class, returns `True` or `False`
+
 	registration_class.add_class('54034')
 
 ### Major Requirements(not working yet)
 The `get_major_requirements` function gets a list of classes that you need to take in order to graduate
-	registration_class.get_major_requirements()
+
+	audit registration_class.get_major_requirements()
+	import major_requirements
+	test_audit = major_requirements(audit)
