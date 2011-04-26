@@ -126,13 +126,13 @@ def class_search(original_html):
             #if row_headers[index] in elements_to_int:
                 #content = int(content)
 
-            if row_headers[index]=='Day/Time/Date':
+            if row_headers[index] == 'Day/Time/Date':
                 fields = content.split(' ')
                 days = list(fields[0])
                 try:
                     times = fields[1][:9].split('-')
-                    for index, time in enumerate(times):
-                        times[index] = time[:2] + ':' + time[2:]
+                    for inner_index, time in enumerate(times):
+                        times[inner_index] = time[:2] + ':' + time[2:]
                 except:
                     times = ''
                 try:
@@ -140,6 +140,7 @@ def class_search(original_html):
                 except:
                     dates = ''
                 content = {"Days":days, "Time":times, "Dates":dates}
+
             one_class[row_headers[index]] = content
         classes.append(one_class)
 

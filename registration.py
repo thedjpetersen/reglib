@@ -118,10 +118,10 @@ class infosu(object):
                 if each_class['Term'] == term:
                     #If the classes are in a certain term return them
                     list_of_classes.append(each_class)
-                if len(list_of_classes) is not 0:
-                    return list_of_classes
-                else:
-                    return "No classes offered for that term"
+            if len(list_of_classes) is not 0:
+                return list_of_classes
+            else:
+                return "No classes offered for that term"
 
     # This function searches for classes that don't conflict with your 
     # current schedule
@@ -159,6 +159,16 @@ class infosu(object):
                 available_classes.append(result)
 
         return available_classes
+
+    def make_schedule(self, list_of_classes, term = ''):
+        if term == '':
+            terms = {'01':'F', '02':'W', '03':'Sp', '04':'Su'}
+            term = terms[self.current_term[-2:]] + self.current_term[2:4]
+        class_search_results = []
+        for each_class in list_of_classes:
+            class_array = each_class.split(' ')
+            result = self.class_search(class_array[0], class_array[1])
+            class_search_results.append(result)
 
     # Helper function that will determine whether or not two times conflict
     # Format of time is ['13:00', '13:50']
