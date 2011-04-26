@@ -107,7 +107,7 @@ class infosu(object):
         html = response.read()
 
         # Get a array of available classes
-        classes = parse_html.class_search(html)
+        classes = parse_html.class_search(html, dep, num)
         if term is '':
             return classes
         
@@ -142,14 +142,14 @@ class infosu(object):
             if result['Avail'] <= '0':
                 print "Full class"
                 continue
-            result_days = result['StartDate']['Days']
-            result_times = result['StartDate']['Time']
+            result_days = result['Day/Time/Date']['Days']
+            result_times = result['Day/Time/Date']['Time']
             for current_class in self.schedule.current_classes:
                 curr_days = current_class['Days']
                 curr_time = current_class['Time']
                 if(set(result_days).intersection(curr_days)):
                     #If we have a conflict set the flag 
-                    if self.conflict(result_times, curr_time): 
+                    if self.time_conflict(result_times, curr_time): 
                         print ('-').join(result_times) + " conflicts with " + ('-').join(curr_time)
                         flag = True
                     else:
@@ -165,14 +165,41 @@ class infosu(object):
             terms = {'01':'F', '02':'W', '03':'Sp', '04':'Su'}
             term = terms[self.current_term[-2:]] + self.current_term[2:4]
         class_search_results = []
+        
         for each_class in list_of_classes:
             class_array = each_class.split(' ')
             result = self.class_search(class_array[0], class_array[1])
             class_search_results.append(result)
 
+        class_set = []
+        combinations = []
+        for result_set in class_search_results:
+            for result in result_set:
+                print "Added" + result['CRN']
+                combinations.append([result])
+                for combination in combinations:
+                    for member in combination:
+                        flag = False
+                        if member['Dep'] == result['Dep'] and member['Num'] == result['Num']:
+                            print member['Dep'] + ' ' + member['Num'] + ' is the same as ' + result['Dep'] + ' ' + result['Num']
+                            flag = True 
+                        if self.class_search_conflict(result, member):
+                            print member['Dep'] + ' ' + member['Num'] + ' does not conflict with ' + result['Dep'] + ' ' + result['Num'] + '...adding'
+                            flag = True 
+                    if not flag:
+                        combination.append(result)
+
+        return combinations
+
+
+    def class_search_conflict(self, class1, class2):
+        if (set(class1['Day/Time/Date']['Days']).intersection(class2['Day/Time/Date']['Days']) and self.time_conflict(class1['Day/Time/Date']['Time'], class2['Day/Time/Date']['Time'])):
+            return True
+        return False
+
     # Helper function that will determine whether or not two times conflict
     # Format of time is ['13:00', '13:50']
-    def conflict(self, time, time1):
+    def time_conflict(self, time, time1):
         if (time[0] >= time1[0] and time[0] <= time1[1]) or (time[1] >= time1[0] and time[1] <= time1[1]):
             return True
         return False

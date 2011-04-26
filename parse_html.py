@@ -95,7 +95,7 @@ def get_current_classes(original_html):
 
     return total_classes
 
-def class_search(original_html):
+def class_search(original_html, dep, num):
     html = lxml.html.fromstring(original_html)
     table_element  = html.get_element_by_id('ctl00_ContentPlaceHolder1_SOCListUC1_gvOfferings')
     table_elements = table_element.getchildren()[1:]
@@ -142,6 +142,8 @@ def class_search(original_html):
                 content = {"Days":days, "Time":times, "Dates":dates}
 
             one_class[row_headers[index]] = content
+        one_class['Dep'] = dep
+        one_class['Num'] = num
         classes.append(one_class)
 
     return classes
