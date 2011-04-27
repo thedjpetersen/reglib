@@ -2,6 +2,7 @@ import fetch_html
 import parse_html
 import transcript 
 import schedule
+import mydegrees
 
 class infosu(object):
 
@@ -189,7 +190,8 @@ class infosu(object):
         form_list = parse_html.mydegrees_final_form(html)
         xml = fetch_html.get_xml(form_list)
 
-        return parse_html.get_major_requirements(xml)
+        audit_tree = parse_html.get_major_requirements(xml)
+        return mydegrees.audit(audit)
 
     # Function to add class to a schedule
     def add_class(self, crn, crn2=''):
