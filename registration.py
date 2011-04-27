@@ -1,26 +1,15 @@
-import urllib
-import urllib2
-import cookielib
+import fetch_html
 import parse_html
 import transcript 
 import schedule
 
 class infosu(object):
 
-    #Our header values for the login request
-    #make sure that we look like a browser
-    header_values =  {'User-Agent' : 'Mozilla/5.0 (X11; U; Linux i686 (x86_64); en-US; rv:1.9.2.16) Gecko/20110319 Firefox/3.6.16', 'Accept' : 'application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5', 'Accept-Charset' : 'ISO-8859-1,utf-8;q=0.7,*;q=0.3', 'Accept-Encoding' : 'gzip,deflate,sdch', 'Accept-Language' : 'en-US,en;q=0.8', 'Cache-Control' : 'max-age=0', 'Connection' : 'keep-alive', 'Host' : 'adminfo.ucsadm.oregonstate.edu', 'Referer' : 'https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_WWWLogin'}
-    
     def __init__(self, sid, pin):
         #Set up the your identification to be posted when you login
         self.sid = sid      #this is our student id number
         self.pin = pin      #this is our student pin
         self.login_number = 2       #this variable will be used when we are trying to login
-
-        #Set up a cookie jar to keep the cookies, to keep our session
-        self.cj = cookielib.MozillaCookieJar()
-        self.opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.cj), urllib2.HTTPHandler())
-        urllib2.install_opener(self.opener) 
         
         self.login()    #Set the setid cookie
         successful_login = self.login()
@@ -31,22 +20,7 @@ class infosu(object):
         self.get_transcript()   #We retrieve our transcript
 
     def login(self):
-        #Set the referer to appear to be the www login page
-        self.header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_WWWLogin'
-        
-        #Data to be posted on form
-        form_data = urllib.urlencode({'sid' : self.sid, 'PIN' : self.pin})
-        #The login url
-        login_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_ValLogin'
-
-        #build our request and login to set the SESSID cookie
-        request = urllib2.Request(login_url, form_data, headers = self.header_values)
-        response = self.opener.open(request)
-        
-        #Test to make sure that our response is not a login failure page
-        #Right now testing against length of response, should test against 
-        #page title eventually
-        if len(response.read())<1000:
+        if len(fetch_html.login(self.sid, self.pin))<1000:
             return True
         return False
 
@@ -55,15 +29,8 @@ class infosu(object):
     def get_transcript(self):
         for i in range(self.login_number):  #If we are not logged in we will loop around again
             #The transcript page url
-            trans_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskotrn.P_ViewTran'
-
-            #set up correct header information
-            self.header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskotrn.P_ViewTermTran'
-            self.header_values['Origin'] = 'https://adminfo.ucsadm.oregonstate.edu'
-            form_data = urllib.urlencode({'levl' : '', 'tprt' : 'WWW'})
-            request = urllib2.Request(trans_url, form_data, headers = self.header_values)
-            response = self.opener.open(request)
-            html = response.read()
+            html = fetch_html.get_transcript()
+            
             if parse_html.get_page_title(html) != 'Login':
                 # We set the transcript variable to a instance of the transcript class
                 self.transcript = transcript.Transcript(html)
@@ -73,12 +40,8 @@ class infosu(object):
     # Function to set our schedule variable
     def get_schedule(self):
         for i in range(self.login_number):
-            classes_list_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskfshd.P_CrseSchdDetl'
-            self.header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_GenMenu?name=bmenu.P_RegMnu'
-
-            request = urllib2.Request(classes_list_url, headers = self.header_values)
-            response = self.opener.open(request)
-            html = response.read()
+            
+            html = fetch_html.setup_schedule_page()
             title = parse_html.get_page_title(html)
             if title != 'Login':
                 if title == 'Select Term ':
@@ -89,22 +52,16 @@ class infosu(object):
                 self.login()
                 continue
 
-            form_data = urllib.urlencode({'term_in' : self.current_term})
-
-            request = urllib2.Request(classes_list_url, form_data, headers=self.header_values)
-            response = self.opener.open(request)
-            html = response.read()
+            html = fetch_html.get_schedule(self.current_term)
             self.schedule = schedule.Schedule(html)
 
     # This function searches for classes
     # It can take a term as a parameter as well
     def class_search(self, dep, num, term=''):
-        class_url = "http://catalog.oregonstate.edu/CourseDetail.aspx?Columns=abcdfghijklmnopqrstuvwxyz&SubjectCode=" + dep + "&CourseNumber=" + num + "&Campus=corvallis"
         
-        response = urllib2.urlopen(class_url)
-        if response.url == 'http://catalog.oregonstate.edu/DOE.aspx?Entity=Course':
+        html = fetch_html.class_search(dep, num)
+        if not html:
             return "Class not found"
-        html = response.read()
 
         # Get a array of available classes
         classes = parse_html.class_search(html, dep, num)
@@ -215,85 +172,39 @@ class infosu(object):
 
     # Function that retrieves the mydegrees page
     def get_major_requirements(self):
-        form_page = "https://adminfo.ucsadm.oregonstate.edu/prod/bwykg_dwssbstudent.P_SignOn"
-        self.header_values['Referer'] = "https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_GenMenu?name=bmenu.P_AdminMnu"
+        html = fetch_html.infosu_mydegrees_redirect()
 
-        # Get request page for the form
-        request = urllib2.Request(form_page, headers = self.header_values)
-        response = self.opener.open(request)
-        html = response.read()
         form_list = parse_html.mydegrees_redirect_form(html)
-        form_data = urllib.urlencode(form_list)
-
-        # Get first page from mydegrees
-        mydegrees_url = "https://mydegrees.oregonstate.edu/IRISLink.cgi"
-        self.header_values['Referer'] = "https://adminfo.ucsadm.oregonstate.edu/prod/bwykg_dwssbstudent.P_SignOn"
-        
-        request = urllib2.Request(mydegrees_url, form_data, headers= self.header_values)
-        response = self.opener.open(request)
-
-        self.header_values['Referer'] = "https://mydegrees.oregonstate.edu/SD_LoadFrameForm.html"
-
-        form_data = urllib.urlencode({'SERVICE':'SCRIPTER','SCRIPT':'SD2STUCON'})
-        request = urllib2.Request(mydegrees_url, form_data, headers = self.header_values)
-        response = self.opener.open(request)
-        html = response.read() #final form is in html.forms[7].form_values()
+        html = fetch_html.first_page_set_cookie(form_list)
 
         # Get variables from mydegrees
         form_list = parse_html.mydegrees_form_mangler(html)
-        form_data = urllib.urlencode(form_list)
-        request = urllib2.Request(mydegrees_url, form_data, headers= self.header_values)
-        response = self.opener.open(request)
-        html = response.read()
+        html = fetch_html.form_variables(form_list)
 
         # Get more variables from mydegrees
         form_list = parse_html.mydegrees_final_form(html)
-        # Construct variables to post 
-        form_data = urllib.urlencode(form_list)
-        request = urllib2.Request(mydegrees_url, form_data, headers= self.header_values) 
-        # Make request for degree audit xml from mydegrees
-        response = self.opener.open(request)
-        xml = response.read()
-        
+        xml = fetch_html.get_xml(form_list)
+
         return parse_html.get_major_requirements(xml)
 
     # Function to add class to a schedule
     def add_class(self, crn, crn2=''):
         for i in range(self.login_number):
-            #Page with the form to add/drop classes
-            add_drop_page_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskfreg.P_AltPin'
-            self.header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_GenMenu?name=bmenu.P_RegMnu'
-            request = urllib2.Request(add_drop_page_url, headers = self.header_values)
-            response = self.opener.open(request)
-            
-            html = response.read()
+            html = fetch_html.setup_ad_page()
             title = parse_html.get_page_title(html)
             form_data = ''
             if title != 'Login':
                 if title == 'Select Term ':
                     self.current_term = parse_html.get_current_term(html)
-                    form_data = urllib.urlencode({'term_in' : current_term})
+                    form_data = fetch_html.current_term_form(self.current_term)
             else:
                 self.login()
                 continue
-
-            request = urllib2.Request(add_drop_page_url, form_data, headers=self.header_values)
-            response = self.opener.open(request)
-            html = response.read()
             
+            html = fetch_html.add_drop_page(form_data)
             # Get a dictionary of values to post as the form
             values = parse_html.add_class(html, crn, crn2)
-           
-            #Set up data to be posted
-            form_data = urllib.urlencode(values)
-            self.header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskfreg.P_AltPin'
-            submit_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwckcoms.P_Regs'
-
-            request = urllib2.Request(submit_url, form_data, headers=self.header_values)
-            # Request page with CRNs of classes to add
-            response = self.opener.open(request)
-
-            html = response.read()
+            html = fetch_html.add_class(values)
             
             # See if there were any errors when posting the form
             return parse_html.add_class_has_errors(html) 
