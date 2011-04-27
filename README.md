@@ -72,6 +72,12 @@ The `add_class` function takes a up to CRNs and tries to add the class, returns 
 
 	registration_class.add_class('54034')
 
+### Possible Schedules(partially functional - works for lectures)
+The `make_schedule` will return all possible non-conflicting combinations for a list of classes. This function takes a array of classes, a optional arguement for the term. If no arguement is given it will assume the current term.
+
+  registration_class.make_schedule(['cs 261', 'fr 213', 'cs 275', 'mth 232']) #current term
+  registration_class.make_schedule(['cs 162', 'mth 111'], 'F12') # This will return the combinations for fall 2012
+
 ### Major Requirements(not working yet)
 The `get_major_requirements` function gets a list of classes that you need to take in order to graduate
 
