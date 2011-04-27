@@ -33,7 +33,9 @@ class infosu(object):
             
             if parse_html.get_page_title(html) != 'Login':
                 # We set the transcript variable to a instance of the transcript class
-                self.transcript = transcript.Transcript(html)
+                grades = parse_html.get_grades(html)
+                credits = parse_html.get_total_credits(html)
+                self.transcript = transcript.Transcript(html, grades, credits)
             else:
                 self.login()
 
