@@ -129,7 +129,7 @@ def class_search(original_html, dep, num):
             #if row_headers[index] in elements_to_int:
                 #content = int(content)
 
-            if row_headers[index] == 'Day/Time/Date':
+            if row_headers[index] == 'Day/Time/Date' and content != 'TBA':
                 fields = content.split(' ')
                 days = list(fields[0])
                 try:
