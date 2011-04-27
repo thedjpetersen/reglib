@@ -1,8 +1,6 @@
-import parse_html
-
 class Schedule(object):
-    def __init__(self, html):
-       self.current_classes = parse_html.get_current_classes(html) 
+    def __init__(self, html, current_classes):
+       self.current_classes = current_classes
        self.schedule = {'Monday':[], 'Tuesday':[], 'Wednesday':[], 'Thursday':[], 'Friday':[]}
 
        for entry in self.current_classes:

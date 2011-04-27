@@ -49,13 +49,15 @@ class infosu(object):
                 if title == 'Select Term ':
                     self.current_term = parse_html.get_current_term(html)
                 else:
-                    self.schedule = schedule.Schedule(html)
+                    current_classes = parse_html.get_current_classes(html) 
+                    self.schedule = schedule.Schedule(html, current_classes)
             else:
                 self.login()
                 continue
 
             html = fetch_html.get_schedule(self.current_term)
-            self.schedule = schedule.Schedule(html)
+            current_classes = parse_html.get_current_classes(html)
+            self.schedule = schedule.Schedule(html, current_classes)
 
     # This function searches for classes
     # It can take a term as a parameter as well
