@@ -97,7 +97,10 @@ def get_current_classes(original_html):
 
 def class_search(original_html, dep, num):
     html = lxml.html.fromstring(original_html)
-    table_element  = html.get_element_by_id('ctl00_ContentPlaceHolder1_SOCListUC1_gvOfferings')
+    try:
+        table_element  = html.get_element_by_id('ctl00_ContentPlaceHolder1_SOCListUC1_gvOfferings')
+    except:
+        return [] 
     table_elements = table_element.getchildren()[1:]
     elements_to_int = ['WL Cap', 'Weeks', 'CRN', 'WL Curr', 'WL Avail', 'Cr']
 

@@ -161,6 +161,8 @@ class infosu(object):
         return available_classes
 
     def make_schedule(self, list_of_classes, term = ''):
+        class_types = ['Lecture', 'WWW']
+        
         if term == '':
             terms = {'01':'F', '02':'W', '03':'Sp', '04':'Su'}
             term = terms[self.current_term[-2:]] + self.current_term[2:4]
@@ -168,8 +170,18 @@ class infosu(object):
         
         for each_class in list_of_classes:
             class_array = each_class.split(' ')
-            result = self.class_search(class_array[0], class_array[1], term)
-            class_search_results.append(result)
+            result_set = self.class_search(class_array[0], class_array[1], term)
+            if type(result_set) is not str:
+                new_set = [] 
+                for index, result in enumerate(result_set):
+                    if result['Type'] not in class_types:
+                        continue 
+                    elif not result['Avail'] > 0: 
+                        continue 
+
+                    new_set.append(result)
+                    
+                class_search_results.append(new_set)
 
         class_set = []
         combinations = []
