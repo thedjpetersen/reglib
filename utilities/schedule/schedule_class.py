@@ -1,6 +1,7 @@
 class Schedule(object):
-    def __init__(self, html, current_classes):
+    def __init__(self, html, current_classes, current_term):
        self.current_classes = current_classes
+       self.current_term = current_term
        self.schedule = {'Monday':[], 'Tuesday':[], 'Wednesday':[], 'Thursday':[], 'Friday':[]}
 
        for entry in self.current_classes:
