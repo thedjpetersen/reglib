@@ -168,23 +168,20 @@ class infosu(object):
         
         for each_class in list_of_classes:
             class_array = each_class.split(' ')
-            result = self.class_search(class_array[0], class_array[1])
+            result = self.class_search(class_array[0], class_array[1], term)
             class_search_results.append(result)
 
         class_set = []
         combinations = []
         for result_set in class_search_results:
             for result in result_set:
-                print "Added" + result['CRN']
                 combinations.append([result])
                 for combination in combinations:
                     for member in combination:
                         flag = False
                         if member['Dep'] == result['Dep'] and member['Num'] == result['Num']:
-                            print member['Dep'] + ' ' + member['Num'] + ' is the same as ' + result['Dep'] + ' ' + result['Num']
                             flag = True 
                         if self.class_search_conflict(result, member):
-                            print member['Dep'] + ' ' + member['Num'] + ' does not conflict with ' + result['Dep'] + ' ' + result['Num'] + '...adding'
                             flag = True 
                     if not flag:
                         combination.append(result)
