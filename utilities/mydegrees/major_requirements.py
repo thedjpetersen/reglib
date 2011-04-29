@@ -3,14 +3,24 @@ class audit:
         self.audit_information = dict(audit.xpath('//AuditHeader')[0].items())
         self.sections = []
         self.required_classes = []
-        
+        self.in_progress_classes = []
+        self.completed_classes = []
+
         for section in audit.xpath('//Block'):
             items = dict(section.items())
             formatted_items = {'Title':items['Title'], 'Percent Complete':items['Per_complete'], 'Credits Applied':items['Credits_applied'], 'Classes Applied':items['Classes_applied'], 'Requirement ID':items['Req_id'], 'Requirement Value':items['Req_value'], 'Requirement Type':items['Req_type'], 'GPA':items['GPA'], 'GPA Credits':items['Gpa_credits'], 'Cat_yr':items['Cat_yr'],'Cat_yr_start':items['Cat_yr_start'], 'Cat_yrLit':items['Cat_yrLit'], 'GPA points':items['Gpa_grade_pts']}
             rules = []
 
             for each_rule in section.xpath('Rule'):
-                rules.append(rule(each_rule))
+                rule_class = rule(each_rule)
+                rules.append(rule_class)
+                if(rule_class.rule_type == 'Course'):
+                    if(rule_class.percent_complete == '0'):
+                        self.required_classes.append(rule_class)
+                    if(rule_class.percent_complete == '98'):
+                        self.in_progress_classes.append(rule_class)
+                    if(rule_class.percent_complete == '100'):
+                        self.completed_classes.append(rule_class)
 
             formatted_items['Rules'] = rules
             self.sections.append(formatted_items)
@@ -40,17 +50,29 @@ class rule:
         self.rule_type = rule.xpath('@RuleType')[0]
         if self.rule_type == 'Course':
             self.course_rule(rule)
+        if self.rule_type = 'Group':
+            self.group_rule(rule)
 
     def course_rule(self, rule):
         rule_items = dict(rule.items())
         self.courses = []
+        self.classes_applied = []
         for course in rule.xpath('Advice/Course'):
             self.courses.append(dict(course.items()))
+        for applied_class in rule.xpath('ClassesApplied/Class'):
+            items = dict(applied_class.items())
+            self.classes_applied.append(items)
         self.name = rule_items['Label']
         self.percent_complete = rule_items['Per_complete']
         self.rule_id = rule_items['Rule_id']
         self.node_type = rule_items['Node_type']
         self.node_id = rule_items['Node_id']
 
-
+    def group_rule(self, rule):
+        rule_items = dict(rule.items())
+        self.name = rule_items['Label']
+        self.percent_complete = rule_items['Per_complete']
+        self.rule_id = rule_items['Rule_id']
+        self.node_type = rule_items['Node_type']
+        self.node_id = rule_items['Node_id']
 
