@@ -3,7 +3,7 @@ import urllib
 import urllib2
 
 def class_search(dep, num):
-    class_url = "http://catalog.oregonstate.edu/CourseDetail.aspx?Columns=abcdfghijklmnopqrstuvwxyz&SubjectCode=" + dep + "&CourseNumber=" + num + "&Campus=corvallis"
+    class_url = "http://catalog.oregonstate.edu/CourseDetail.aspx?Columns=abcdefghijklmnopqrstuvwxyz&SubjectCode=" + dep + "&CourseNumber=" + num + "&Campus=corvallis"
         
     response = urllib2.urlopen(class_url)
     if response.url == 'http://catalog.oregonstate.edu/DOE.aspx?Entity=Course':

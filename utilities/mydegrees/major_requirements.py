@@ -14,13 +14,7 @@ class audit:
             for each_rule in section.xpath('Rule'):
                 rule_class = rule(each_rule)
                 rules.append(rule_class)
-                if(rule_class.rule_type == 'Course'):
-                    if(rule_class.percent_complete == '0'):
-                        self.required_classes.append(rule_class)
-                    if(rule_class.percent_complete == '98'):
-                        self.in_progress_classes.append(rule_class)
-                    if(rule_class.percent_complete == '100'):
-                        self.completed_classes.append(rule_class)
+                self.class_assigner(rule_class) 
 
             formatted_items['Rules'] = rules
             self.sections.append(formatted_items)
@@ -43,18 +37,39 @@ class audit:
             self.student_id = self.audit_information['Stu_id']
             self.audit_id = self.audit_information['Audit_id']
 
-    
+    def class_assigner(self, rule_class):
+        if(rule_class.rule_type == 'Course'):
+            if(rule_class.percent_complete == '0'):
+                self.required_classes.append(rule_class)
+            if(rule_class.percent_complete == '98'):
+                self.in_progress_classes.append(rule_class)
+            if(rule_class.percent_complete == '100'):
+                self.completed_classes.append(rule_class)
+        if(rule_class.rule_type == 'Subset'):
+            for each_rule in rule_class.rules:
+                self.class_assigner(each_rule)
+        if(rule_class.rule_type == 'Group' and rule_class.percent_complete == '0'):
+            rule_class.courses = []
+            for each_rule in rule_class.rules:
+                rule_class.courses += each_rule.courses
+            self.required_classes.append(rule_class)
 class rule:
 
     def __init__(self, rule):
         self.rule_type = rule.xpath('@RuleType')[0]
         if self.rule_type == 'Course':
             self.course_rule(rule)
-        if self.rule_type = 'Group':
-            self.group_rule(rule)
+        if self.rule_type == 'Subset' or self.rule_type == 'Group':
+            self.subset_group_rule(rule)
 
     def course_rule(self, rule):
         rule_items = dict(rule.items())
+        requirement_items = dict(rule.xpath('Requirement')[0].items())
+        try:
+            self.classes_needed = requirement_items['Classes_begin']
+            self.classes_option = requirement_items['Class_cred_op']
+        except:
+            pass
         self.courses = []
         self.classes_applied = []
         for course in rule.xpath('Advice/Course'):
@@ -68,11 +83,16 @@ class rule:
         self.node_type = rule_items['Node_type']
         self.node_id = rule_items['Node_id']
 
-    def group_rule(self, rule):
+    def subset_group_rule(self, rule):
         rule_items = dict(rule.items())
         self.name = rule_items['Label']
         self.percent_complete = rule_items['Per_complete']
         self.rule_id = rule_items['Rule_id']
         self.node_type = rule_items['Node_type']
         self.node_id = rule_items['Node_id']
-
+        
+        self.rules = []
+        member_rules = rule.xpath('Rule')
+        for each_rule in member_rules:
+            self.rules.append(self.__class__(each_rule))
+    
