@@ -1,9 +1,10 @@
 import parse_html
 import fetch_html
 import schedule
+from login import login
 
 # Function to set our schedule variable
-def get_schedule():
+def get_schedule(sid, pin):
     login_number = 2
     current_term = ''
     for i in range(login_number):
@@ -17,7 +18,7 @@ def get_schedule():
                 current_classes = parse_html.get_current_classes(html) 
                 return schedule.Schedule(html, current_classes, current_term)
         else:
-            login()
+            login(sid, pin)
             continue
 
         html = fetch_html.get_schedule(current_term)

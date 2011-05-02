@@ -22,11 +22,11 @@ class infosu(object):
     # This function fetches the transcript page and parses it
     # It sets the classes transcript variable to the transcript class
     def get_transcript(self):
-        self.transcript = utilities.get_transcript()
+        self.transcript = utilities.get_transcript(self.sid, self.pin)
 
     # Function to set our schedule variable
     def get_schedule(self):
-        self.schedule = utilities.get_schedule()
+        self.schedule = utilities.get_schedule(self.sid, self.pin)
 
     # This function searches for classes
     # It can take a term as a parameter as well
@@ -51,7 +51,7 @@ class infosu(object):
 
     # Function that retrieves the mydegrees page
     def get_major_requirements(self):
-        return utilities.get_major_requirements()
+        return utilities.get_major_requirements(self.sid, self.pin)
 
     # Function to add class to a schedule
     def add_class(self, crn, crn2=''):

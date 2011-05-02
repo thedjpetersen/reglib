@@ -3,7 +3,7 @@ import parse_html
 import fetch_html
 from login import login
  
-def get_transcript():
+def get_transcript(sid, pin):
     login_number = 2
     for i in range(login_number):  #If we are not logged in we will loop around again
         #The transcript page url
@@ -15,4 +15,4 @@ def get_transcript():
             credits = parse_html.get_total_credits(html)
             return transcript.Transcript(html, grades, credits)
         else:
-            login()
+            login(sid, pin)
