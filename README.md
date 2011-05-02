@@ -8,9 +8,9 @@ Installation
 
 First be sure you have the module `lxml` as it is a dependency for parsing the html.
 
-  git clone git@github.com:thedjpetersen/OSU-Registration.git
-  cd OSU-Registration
-  sudo python setup.py install
+	git clone git@github.com:thedjpetersen/OSU-Registration.git
+	cd OSU-Registration
+	sudo python setup.py install
 
 Usage
 ------
