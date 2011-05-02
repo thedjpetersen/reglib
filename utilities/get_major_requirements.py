@@ -1,8 +1,10 @@
 import fetch_html
 import parse_html
 import mydegrees
+from login import login
 
 def get_major_requirements():
+    login()
     html = fetch_html.infosu_mydegrees_redirect()
 
     form_list = parse_html.mydegrees_redirect_form(html)
@@ -17,4 +19,6 @@ def get_major_requirements():
     xml = fetch_html.get_xml(form_list)
 
     audit_tree = parse_html.get_major_requirements(xml)
-    return mydegrees.audit(audit_tree)
+    advice = parse_html.advice(fetch_html.advice())
+
+    return mydegrees.audit(audit_tree, advice)

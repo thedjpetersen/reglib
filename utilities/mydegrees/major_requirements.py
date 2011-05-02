@@ -1,10 +1,11 @@
 class audit:
-    def __init__(self, audit):
+    def __init__(self, audit, advice):
         self.audit_information = dict(audit.xpath('//AuditHeader')[0].items())
         self.sections = []
         self.required_classes = []
         self.in_progress_classes = []
         self.completed_classes = []
+        self.advice = advice
 
         for section in audit.xpath('//Block'):
             items = dict(section.items())
@@ -40,6 +41,10 @@ class audit:
     def class_assigner(self, rule_class):
         if(rule_class.rule_type == 'Course'):
             if(rule_class.percent_complete == '0'):
+                try:
+                    rule_class.courses += self.advice[rule_class.advice_code]['Classes']
+                except:
+                    pass
                 self.required_classes.append(rule_class)
             if(rule_class.percent_complete == '98'):
                 self.in_progress_classes.append(rule_class)
@@ -51,8 +56,12 @@ class audit:
         if(rule_class.rule_type == 'Group' and rule_class.percent_complete == '0'):
             rule_class.courses = []
             for each_rule in rule_class.rules:
-                rule_class.courses += each_rule.courses
+                if(each_rule.rule_type == 'Course'):
+                    rule_class.courses += each_rule.courses
+                if(each_rule.rule_type == 'Group'):
+                    self.class_assigner(each_rule)
             self.required_classes.append(rule_class)
+
 class rule:
 
     def __init__(self, rule):
@@ -61,6 +70,8 @@ class rule:
             self.course_rule(rule)
         if self.rule_type == 'Subset' or self.rule_type == 'Group':
             self.subset_group_rule(rule)
+        if self.rule_type == 'IfStmt':
+            self.if_rule(rule)
 
     def course_rule(self, rule):
         rule_items = dict(rule.items())
@@ -70,6 +81,12 @@ class rule:
             self.classes_option = requirement_items['Class_cred_op']
         except:
             pass
+
+        try:
+            self.advice_code = rule.xpath("RuleTag[@Name='AdviceJump']")[1].items()[1][1].split('#')[1]
+        except:
+            pass
+
         self.courses = []
         self.classes_applied = []
         for course in rule.xpath('Advice/Course'):
@@ -95,4 +112,14 @@ class rule:
         member_rules = rule.xpath('Rule')
         for each_rule in member_rules:
             self.rules.append(self.__class__(each_rule))
-    
+
+    def if_rule(self, rule):
+        rule_items = dict(rule.items())
+        if(rule_items['Per_complete'] != 'Not Used'):
+            try:
+                if not rule.xpath("Requirement/IfPart/Rule[@Per_complete='Not Used']"):
+                    self.__init__(rule.xpath("Requirement/IfPart/Rule")[0])
+                else:
+                    self.__init__(rule.xpath("Requirement/ElsePart/Rule")[0])
+            except:
+                pass

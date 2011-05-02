@@ -7,4 +7,4 @@ from get_current_classes import get_current_classes
 from get_page_title import get_page_title
 from get_total_credits import get_total_credits
 from mydegrees_forms import mydegrees_redirect_form, mydegrees_form_mangler, mydegrees_final_form
-
+from advice import advice
