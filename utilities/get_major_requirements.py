@@ -1,10 +1,8 @@
 import fetch_html
 import parse_html
 import mydegrees
-from login import login
 
 def get_major_requirements():
-    login()
     html = fetch_html.infosu_mydegrees_redirect()
 
     form_list = parse_html.mydegrees_redirect_form(html)
