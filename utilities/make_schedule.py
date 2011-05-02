@@ -39,7 +39,7 @@ def make_schedule(list_of_classes, term, schedule):
             if result['Type'] in lab_types:
                 is_lab = True
 
-            for combination in combinations:
+            for inner_index, combination in enumerate(combinations):
                 for index, member in enumerate(combination):
                     flag = False
 
@@ -47,8 +47,8 @@ def make_schedule(list_of_classes, term, schedule):
                         flag = True 
                     if class_search_conflict(result, member):
                         flag = True 
-                    if member['Dep'] == result['Dep'] and member['Num'] == result['Num'] and member['Type'] != result['Type'] and index == len(combination)-1 and flag:
-                        combination.remove(member)
+                        if member['Dep'] == result['Dep'] and member['Num'] == result['Num'] and member['Type'] != result['Type'] and index == len(combination)-1:
+                            combination.remove(member)
                         
                 if not flag:
                     combination.append(result)
