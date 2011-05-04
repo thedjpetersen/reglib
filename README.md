@@ -87,9 +87,8 @@ The `make_schedule` will return all possible non-conflicting combinations for a 
  	registration_class.make_schedule(['cs 261', 'fr 213', 'cs 275', 'mth 232']) #current term
  	registration_class.make_schedule(['cs 162', 'mth 111'], 'F12') # This will return the combinations for fall 2012
 
-### Major Requirements(not working yet)
+### Major Requirements
 The `get_major_requirements` function gets a list of classes that you need to take in order to graduate
 
-	audit registration_class.get_major_requirements()
-	import major_requirements
-	test_audit = major_requirements(audit)
+	audit = registration_class.get_major_requirements()
+	audit.classes_required
