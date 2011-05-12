@@ -21,4 +21,10 @@ class Schedule(object):
             for day in self.schedule:
                 self.schedule[day].sort()
 
+    def has_class(self, dep, num):
+        for each_class in self.current_classes:
+            if each_class['Department'] == dep.upper() and each_class['Class Number'] == num:
+                return True
+        return False
+
 
