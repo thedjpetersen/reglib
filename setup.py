@@ -32,6 +32,7 @@ setup(name='registration',
         description='Library to interface with Oregon State\'s registration system',
         author='David Petersen',
         author_email='thedjpetersen@gmail.com',
+        install_requires = ['lxml'],
         packages=packages
         )
 
