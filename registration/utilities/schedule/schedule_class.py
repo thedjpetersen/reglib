@@ -6,7 +6,7 @@ class Schedule(object):
 
        for entry in self.current_classes:
             for day in entry['Days']:
-                class_data = [entry['Time'], entry['Location'], (' ').join([entry['Department'], entry['Class Number']]), entry['Type']]
+                class_data = [entry['Time'], entry['Location'], (' ').join([entry['Department'], entry['ClassNumber']]), entry['Type']]
                 if day == 'M':
                     self.schedule['Monday'].append(class_data)
                 if day == 'T':
@@ -23,7 +23,7 @@ class Schedule(object):
 
     def has_class(self, dep, num):
         for each_class in self.current_classes:
-            if each_class['Department'] == dep.upper() and each_class['Class Number'] == num:
+            if each_class['Department'] == dep.upper() and each_class['ClassNumber'] == num:
                 return True
         return False
 

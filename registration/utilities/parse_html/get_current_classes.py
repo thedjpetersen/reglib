@@ -12,11 +12,11 @@ def get_current_classes(original_html):
         cl = {}
         title_string = each_class[0].find_class("captiontext")[0].text_content()
         string_components = title_string.split(' - ')
-        cl["Class Name"] = string_components[0]
+        cl["ClassName"] = string_components[0]
         cl["Section"] = string_components[2]
         string_components = string_components[1].split(' ')
         cl["Department"] = string_components[0]
-        cl["Class Number"] = string_components[1]
+        cl["ClassNumber"] = string_components[1]
         
         class_elements = []
         for index, element in enumerate(each_class[0].getchildren()[1:9]):
@@ -26,7 +26,7 @@ def get_current_classes(original_html):
         cl["CRN"] = class_elements[1]
         cl["Registration"] = class_elements[2]
         cl["Instructor"] = class_elements[3].replace('\n','')
-        cl["Grading Mode"] = class_elements[4]
+        cl["GradingMode"] = class_elements[4]
         cl["Credits"] = float(class_elements[5])
         cl["Level"] = class_elements[6]
         cl["Campus"] = class_elements[7]
@@ -43,7 +43,7 @@ def get_current_classes(original_html):
         cl['Days'] = list(class_elements[2])
         cl['Location'] = {'Building' : (' ').join(class_elements[3].split(' ')[:-1]), 'Room': class_elements[3].split(' ')[-1]}
         cl['Duration'] = class_elements[4]
-        cl['Class Type'] = class_elements[5]
+        cl['ClassType'] = class_elements[5]
         
         total_classes.append(cl)
 
