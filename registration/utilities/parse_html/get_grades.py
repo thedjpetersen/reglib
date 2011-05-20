@@ -24,6 +24,15 @@ def get_grades(original_html):
         for subelement in element.getchildren():
             text.append(subelement.text_content())
         
-        classes.append({'Name' : text[2], 'Department' : text[0], 'CourseNumber' : text[1], 'Credits' : float(text[3]), 'Grade' : text[4], 'Term' : classes_term[index]})
+        term = classes_term[index]
+        terms = {'01': 'Fall', '02':'Winter', '03':'Spring', '04':'Winter'}
+        try:
+            if len(term)>7:
+                term = term.split(': ')[1]
+            else:
+                term = ' '.join([terms[term[4:6]], term[0:4] ])
+        except:
+            pass
+        classes.append({'Name' : text[2], 'Department' : text[0], 'CourseNumber' : text[1], 'Credits' : float(text[3]), 'Grade' : text[4], 'Term' : term})
 
     return classes
