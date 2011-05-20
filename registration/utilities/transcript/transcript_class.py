@@ -7,7 +7,7 @@ class Transcript(object):
         cn = cn.upper()
         dep = dep.upper()
         for entry in self.grades:
-            if entry['Department'] == dep and entry['Course Number'] == cn:
+            if entry['Department'] == dep and entry['CourseNumber'] == cn:
                 return entry
         return False
 
@@ -16,7 +16,7 @@ class Transcript(object):
         dep = dep.upper()
         passing_grades = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C']
         for entry in self.grades:
-            if entry['Department'] == dep and entry['Course Number'] == cn and entry['Grade'] in passing_grades:
+            if entry['Department'] == dep and entry['CourseNumber'] == cn and entry['Grade'] in passing_grades:
                 return True
         return False
 

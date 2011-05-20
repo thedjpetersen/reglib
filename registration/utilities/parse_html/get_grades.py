@@ -24,6 +24,6 @@ def get_grades(original_html):
         for subelement in element.getchildren():
             text.append(subelement.text_content())
         
-        classes.append({'Name' : text[2], 'Department' : text[0], 'Course Number' : text[1], 'Credits' : float(text[3]), 'Grade' : text[4], 'Term' : classes_term[index]})
+        classes.append({'Name' : text[2], 'Department' : text[0], 'CourseNumber' : text[1], 'Credits' : float(text[3]), 'Grade' : text[4], 'Term' : classes_term[index]})
 
     return classes
