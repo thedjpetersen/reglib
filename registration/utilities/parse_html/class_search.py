@@ -23,7 +23,8 @@ def class_search(original_html, dep, num):
             content = cell.text_content().strip()
 
             if row_headers[index] == 'Restrictions' and content != '':
-                content = content.split(':')[1]
+                content = content.split(':')[1].strip().replace('\n', '').replace('\r', '').replace('  ', '')
+                '''
                 content = (' ').join(content.rsplit()).replace(u' College\xc2 Limitations', '').replace('(', '').replace(')','').split(' and ')
                 for inner_index, block in enumerate(content):
                     content[inner_index] = block.split(' or ')
@@ -31,6 +32,7 @@ def class_search(original_html, dep, num):
                     for inner_index, inner_element in enumerate(outer_element):
                         fields = inner_element.split(' ')
                         content[outer_index][inner_index] = {'Department':str(fields[0]), 'Course Number':fields[1]}
+                '''
             #if row_headers[index] in elements_to_int:
                 #content = int(content)
 

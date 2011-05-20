@@ -56,11 +56,12 @@ class audit:
         if(rule_class.rule_type == 'Group' and rule_class.percent_complete == '0'):
             rule_class.courses = []
             for each_rule in rule_class.rules:
-                if(each_rule.rule_type == 'Course'):
-                    rule_class.courses += each_rule.courses
-                if(each_rule.rule_type == 'Group'):
-                    self.class_assigner(each_rule)
-            self.required_classes.append(rule_class)
+                try:
+                    for course in each_rule.courses:
+                        if course['Num'] != 'LDT':
+                            self.required_classes.append(each_rule)
+                except:
+                    pass
 
 class rule:
 
