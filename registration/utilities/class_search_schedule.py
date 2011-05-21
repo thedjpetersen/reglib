@@ -18,8 +18,8 @@ def class_search_schedule(dep, num, schedule):
         if result['Avail'] <= '0':
             print "Full class"
             continue
-        result_days = result['Day/Time/Date']['Days']
-        result_times = result['Day/Time/Date']['Time']
+        result_days = result['Times']['Days']
+        result_times = result['Times']['Time']
         for current_class in schedule.current_classes:
             curr_days = current_class['Days']
             curr_time = current_class['Time']

@@ -51,7 +51,10 @@ def class_search(original_html, dep, num):
                     dates = ''
                 content = {"Days":days, "Time":times, "Dates":dates}
 
-            one_class[row_headers[index]] = content
+            if row_headers[index] == 'Day/Time/Date':
+                one_class['Times'] = content
+            else:
+                one_class[row_headers[index]] = content
         one_class['Dep'] = dep
         one_class['Num'] = num
         classes.append(one_class)

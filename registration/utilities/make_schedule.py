@@ -47,6 +47,9 @@ def make_schedule(list_of_classes, term, schedule):
                         flag = True 
                     if class_search_conflict(result, member):
                         flag = True 
+                        # If the class is the same, but of a different type
+                        # Like the difference between a recitation and a lecture
+                        # Remove
                         if member['Dep'] == result['Dep'] and member['Num'] == result['Num'] and member['Type'] != result['Type'] and index == len(combination)-1:
                             combination.remove(member)
                         
