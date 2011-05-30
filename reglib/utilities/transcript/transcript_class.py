@@ -1,9 +1,10 @@
 import re
 
 class Transcript(object):
-    def __init__(self, html, grades, credits):
+    def __init__(self, html, grades, credits, gpa):
         self.grades = grades
-        self.credits = credits
+        self.credits = credits # dictionary (institution, transfer, overall) 
+        self.gpa = gpa # dictionary (osu ,transfer)
 
     def has_class(self, dep, cn):
         cn = cn.upper()
@@ -69,7 +70,6 @@ class Transcript(object):
                 if year not in years:
                     years.append(year)
         years = sorted(years, reverse=True)
-        print years
 
         # Sort by year, then term starting with fall (most recent)
         sorted_transcript = []

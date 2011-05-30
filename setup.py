@@ -16,7 +16,7 @@ def fullsplit(path, result=None):
         return result
     return fullsplit(head, [tail] + result)
  
-package_dir = "registration"
+package_dir = "reglib"
  
 packages = []
 for dirpath, dirnames, filenames in os.walk(package_dir):
@@ -27,7 +27,7 @@ for dirpath, dirnames, filenames in os.walk(package_dir):
     if "__init__.py" in filenames:
         packages.append(".".join(fullsplit(dirpath)))
 
-setup(name='registration',
+setup(name='reglib',
         version='0.1',
         description='Library to interface with Oregon State\'s registration system',
         author='David Petersen',
