@@ -31,7 +31,7 @@ reg_class.get_transcript()
 ##########
 #SEARCHING
 ##########
-#print reg_class.class_search('cs', '311')
+print reg_class.class_search('cd', '311')
 #print reg_class.class_search_schedule('ph', '213')
 
 
