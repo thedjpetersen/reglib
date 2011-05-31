@@ -55,8 +55,8 @@ def class_search(original_html, dep, num):
                 one_class['Times'] = content
             else:
                 one_class[row_headers[index]] = content
-        one_class['Dep'] = dep
-        one_class['Num'] = num
+        one_class['department'] = dep
+        one_class['course_number'] = num
         classes.append(one_class)
 
     return classes

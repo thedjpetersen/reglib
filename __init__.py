@@ -1,1 +1,1 @@
-from registration import infosu
+from reglib import infosu
