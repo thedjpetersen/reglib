@@ -5,7 +5,7 @@ def class_search(dep, num, term=''):
         
         html = fetch_html.class_search(dep, num)
         if not html:
-            return "Class not found"
+            return None #no such course
 
         # Get a array of available classes
         classes = parse_html.class_search(html, dep, num)
@@ -22,4 +22,4 @@ def class_search(dep, num, term=''):
             if len(list_of_classes) is not 0:
                 return list_of_classes
             else:
-                return "No classes offered for that term"
+                return None #no course for that term 
