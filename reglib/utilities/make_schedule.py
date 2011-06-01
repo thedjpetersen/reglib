@@ -56,4 +56,4 @@ def make_schedule(list_of_classes, term, schedule):
                 if not flag:
                     combination.append(result)
 
-    return combinations
+    return {"combinations" : combinations, "classes_possible" : len(class_search_results)}
