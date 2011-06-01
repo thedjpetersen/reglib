@@ -15,14 +15,14 @@ def class_search_schedule(dep, num, schedule):
     for result in search_results:
         flag = False
         # If the class is full
-        if result['Avail'] <= '0':
+        if result['available'] <= '0':
             print "Full class"
             continue
-        result_days = result['Times']['Days']
-        result_times = result['Times']['Time']
+        result_days = result['days']
+        result_times = result['times']
         for current_class in schedule.current_classes:
-            curr_days = current_class['Days']
-            curr_time = current_class['Time']
+            curr_days = current_class['days']
+            curr_time = current_class['time']
             if(set(result_days).intersection(curr_days)):
                 #If we have a conflict set the flag 
                 if time_conflict(result_times, curr_time): 

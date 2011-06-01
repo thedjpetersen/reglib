@@ -16,7 +16,7 @@ def class_search(dep, num, term=''):
         else:
             list_of_classes = []
             for each_class in classes:
-                if each_class['Term'] == term:
+                if each_class['term'] == term:
                     #If the classes are in a certain term return them
                     list_of_classes.append(each_class)
             if len(list_of_classes) is not 0:

@@ -16,11 +16,11 @@ def make_schedule(list_of_classes, term, schedule):
             new_set = [] 
             rec_lab = []
             for index, result in enumerate(result_set):
-                if result['Type'] in lab_types and result['Avail'] > 0:
+                if result['type'] in lab_types and result['available'] > 0:
                     rec_lab.append(result)
-                if result['Type'] not in class_types:
+                if result['type'] not in class_types:
                     continue 
-                elif not result['Avail'] > '0': 
+                elif not result['available'] > '0': 
                     continue 
 
                 new_set.append(result)
@@ -36,21 +36,21 @@ def make_schedule(list_of_classes, term, schedule):
             combinations.append([result])
             
             is_lab = False
-            if result['Type'] in lab_types:
+            if result['type'] in lab_types:
                 is_lab = True
 
             for inner_index, combination in enumerate(combinations):
                 for index, member in enumerate(combination):
                     flag = False
 
-                    if member['department'] == result['department'] and member['course_number'] == result['course_number'] and member['Type'] == result['Type']:
+                    if member['department'] == result['department'] and member['number'] == result['number'] and member['type'] == result['type']:
                         flag = True 
                     if class_search_conflict(result, member):
                         flag = True 
                         # If the class is the same, but of a different type
                         # Like the difference between a recitation and a lecture
                         # Remove
-                        if member['department'] == result['department'] and member['course_number'] == result['course_number'] and member['Type'] != result['Type'] and index == len(combination)-1:
+                        if member['department'] == result['department'] and member['number'] == result['number'] and member['type'] != result['type'] and index == len(combination)-1:
                             combination.remove(member)
                         
                 if not flag:

@@ -33,6 +33,6 @@ def get_grades(original_html):
                 term = ' '.join([terms[term[4:6]], term[0:4] ])
         except:
             pass
-        classes.append({'Name' : text[2], 'Department' : text[0], 'CourseNumber' : text[1], 'Credits' : float(text[3]), 'Grade' : text[4], 'Term' : term})
+        classes.append({'title' : text[2], 'department' : text[0], 'number' : text[1], 'credits' : float(text[3]), 'grade' : text[4], 'term' : term})
 
     return classes
