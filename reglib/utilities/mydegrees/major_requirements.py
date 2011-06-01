@@ -9,7 +9,7 @@ class audit:
 
         for section in audit.xpath('//Block'):
             items = dict(section.items())
-            formatted_items = {'Title':items['Title'], 'Percent Complete':items['Per_complete'], 'Credits Applied':items['Credits_applied'], 'Classes Applied':items['Classes_applied'], 'Requirement ID':items['Req_id'], 'Requirement Value':items['Req_value'], 'Requirement Type':items['Req_type'], 'GPA':items['GPA'], 'GPA Credits':items['Gpa_credits'], 'Cat_yr':items['Cat_yr'],'Cat_yr_start':items['Cat_yr_start'], 'Cat_yrLit':items['Cat_yrLit'], 'GPA points':items['Gpa_grade_pts']}
+            formatted_items = {'title':items['Title'], 'percent_complete':items['Per_complete'], 'credits_applied':items['credits_applied'], 'classes_ applied':items['Classes_applied'], 'requirement_id':items['Req_id'], 'requirement_value':items['Req_value'], 'requirement_type':items['Req_type'], 'gpa':items['GPA'], 'gpa_credits':items['Gpa_credits'], 'cat_yr':items['Cat_yr'],'cat_yr_start':items['Cat_yr_start'], 'cat_yrLit':items['cat_yrLit'], 'gpa_points':items['Gpa_grade_pts']}
             rules = []
 
             for each_rule in section.xpath('Rule'):
@@ -17,7 +17,7 @@ class audit:
                 rules.append(rule_class)
                 self.class_assigner(rule_class) 
 
-            formatted_items['Rules'] = rules
+            formatted_items['rules'] = rules
             self.sections.append(formatted_items)
 
             goals = []
@@ -26,14 +26,14 @@ class audit:
             
             temp_dict = dict(audit.xpath('Deginfo/DegreeData')[0].items())
             self.degree_data = {}
-            self.degree_data['Level'] = temp_dict['Stu_levelLit']
-            self.degree_data['Degree'] = temp_dict['DegreeLit']
-            self.degree_data['Degree Code'] = temp_dict['Degree']
-            self.degree_data['School Code'] = temp_dict['School']
-            self.degree_data['GPA'] = self.audit_information['DWGPA']
-            self.degree_data['Classes'] = self.sections[0]['Classes Applied']
-            self.degree_data['Credits'] = self.sections[0]['Credits Applied']
-            self.degree_data['Email'] = self.audit_information['Stu_email']
+            self.degree_data['level'] = temp_dict['Stu_levelLit']
+            self.degree_data['degree'] = temp_dict['DegreeLit']
+            self.degree_data['degree Code'] = temp_dict['Degree']
+            self.degree_data['school Code'] = temp_dict['School']
+            self.degree_data['gpa'] = self.audit_information['DWGPA']
+            self.degree_data['classes'] = self.sections[0]['Classes Applied']
+            self.degree_data['credits'] = self.sections[0]['Credits Applied']
+            self.degree_data['email'] = self.audit_information['Stu_email']
 
             self.student_id = self.audit_information['Stu_id']
             self.audit_id = self.audit_information['Audit_id']
@@ -58,7 +58,7 @@ class audit:
             for each_rule in rule_class.rules:
                 try:
                     for course in each_rule.courses:
-                        if course['Num'] != 'LDT':
+                        if course['number'] != 'LDT':
                             self.required_classes.append(each_rule)
                 except:
                     pass

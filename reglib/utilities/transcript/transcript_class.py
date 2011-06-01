@@ -10,7 +10,7 @@ class Transcript(object):
         cn = cn.upper()
         dep = dep.upper()
         for entry in self.grades:
-            if entry['Department'] == dep and entry['CourseNumber'] == cn:
+            if entry['department'] == dep and entry['number'] == cn:
                 return entry
         return False
 
@@ -19,14 +19,14 @@ class Transcript(object):
         dep = dep.upper()
         passing_grades = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C']
         for entry in self.grades:
-            if entry['Department'] == dep and entry['CourseNumber'] == cn and entry['Grade'] in passing_grades:
+            if entry['department'] == dep and entry['number'] == cn and entry['grade'] in passing_grades:
                 return True
         return False
 
     def grade_distribution(self):
         grades_array = []
         for element in self.grades:
-            grades_array.append(element['Grade'])
+            grades_array.append(element['grade'])
             grades_array.sort()
         
         seen = {}
@@ -52,13 +52,13 @@ class Transcript(object):
 
         # Sort the whole course of lists by term
         for course in self.grades:
-            if fall_regex.search(course['Term']):
+            if fall_regex.search(course['term']):
                 fall.append(course)
-            if summer_regex.search(course['Term']):
+            if summer_regex.search(course['term']):
                 summer.append(course)
-            if spring_regex.search(course['Term']):
+            if spring_regex.search(course['term']):
                 spring.append(course)
-            if winter_regex.search(course['Term']):
+            if winter_regex.search(course['term']):
                 winter.append(course)
 
         # Sort each course by year in each term list
@@ -66,7 +66,7 @@ class Transcript(object):
         terms = [fall, summer, spring, winter]
         for term in terms:
             for course in term:
-                year = (re.findall("\d\d\d\d", course['Term']))[0]
+                year = (re.findall("\d\d\d\d", course['term']))[0]
                 if year not in years:
                     years.append(year)
         years = sorted(years, reverse=True)
@@ -76,7 +76,7 @@ class Transcript(object):
         for year in years:
             for term in terms:
                 for course in term:
-                    course_year = (re.findall("\d\d\d\d", course['Term']))[0]
+                    course_year = (re.findall("\d\d\d\d", course['term']))[0]
                     if course_year == year:
                         sorted_transcript.append(course)
        

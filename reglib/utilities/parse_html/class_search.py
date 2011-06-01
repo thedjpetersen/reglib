@@ -33,8 +33,8 @@ def class_search(original_html, dep, num):
                         fields = inner_element.split(' ')
                         content[outer_index][inner_index] = {'Department':str(fields[0]), 'Course Number':fields[1]}
                 '''
-            #if row_headers[index] in elements_to_int:
-                #content = int(content)
+            if row_headers[index] in elements_to_int:
+                content = int(content)
 
             if row_headers[index] == 'Day/Time/Date' and content != 'TBA':
                 fields = content.split(' ')
@@ -49,14 +49,22 @@ def class_search(original_html, dep, num):
                     dates = fields[1][8:]
                 except:
                     dates = ''
-                content = {"Days":days, "Time":times, "Dates":dates}
+                content = {"days":days, "time":times, "dates":dates}
 
             if row_headers[index] == 'Day/Time/Date':
-                one_class['Times'] = content
+                one_class['days'] = content['days']
+                one_class['times'] = content['time']
+                one_class['duration'] = content['dates']
             else:
-                one_class[row_headers[index]] = content
+                one_class[str.lower(row_headers[index])] = content
+
         one_class['department'] = dep
-        one_class['course_number'] = num
+        one_class['number'] = num
+        one_class['credits'] = one_class['cr']
+        one_class['wl_available'] = one_class['wl avail']
+        one_class['available'] = one_class['avail']
+        one_class['wl_cap'] = one_class['wl cap']
+        one_class['wl_curr'] = one_class['wl curr']
         classes.append(one_class)
 
     return classes

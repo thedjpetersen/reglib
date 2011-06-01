@@ -15,7 +15,7 @@ def advice(html):
         items = category.getparent().xpath('dl/dd/div/table/tr/td/a')
         for item in items:
             class_items = item.text_content().split(' ')
-            classes.append({'Disc':class_items[0], 'Num':class_items[1]})
+            classes.append({'discipline':class_items[0], 'number':class_items[1]})
 
-        advice[code] = {'Title':title, 'Classes':classes}
+        advice[code] = {'title':title, 'classes':classes}
     return advice
