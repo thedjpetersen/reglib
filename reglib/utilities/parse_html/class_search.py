@@ -33,8 +33,8 @@ def class_search(original_html, dep, num):
                         fields = inner_element.split(' ')
                         content[outer_index][inner_index] = {'Department':str(fields[0]), 'Course Number':fields[1]}
                 '''
-            if row_headers[index] in elements_to_int:
-                content = int(content)
+            #if row_headers[index] in elements_to_int:
+                #content = int(content)
 
             if row_headers[index] == 'Day/Time/Date' and content != 'TBA':
                 fields = content.split(' ')
