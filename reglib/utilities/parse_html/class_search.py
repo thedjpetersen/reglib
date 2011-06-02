@@ -49,12 +49,12 @@ def class_search(original_html, dep, num):
                     dates = fields[1][8:]
                 except:
                     dates = ''
-                content = {"days":days, "time":times, "dates":dates}
+                content = {"days":days, "time":times, "dates":dates,}
 
-            if row_headers[index] == 'Day/Time/Date':
-                one_class['days'] = content['days']
-                one_class['times'] = content['time']
-                one_class['duration'] = content['dates']
+            if row_headers[index] == 'Day/Time/Date' and content != 'TBA':
+                one_class["days"] = content["days"]
+                one_class["times"] = content["time"]
+                one_class["duration"] = content["dates"]
             else:
                 one_class[str.lower(row_headers[index])] = content
 
