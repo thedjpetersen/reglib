@@ -91,4 +91,5 @@ The `make_schedule` will return all possible non-conflicting combinations for a 
 The `get_major_requirements` function gets a list of classes that you need to take in order to graduate
 
 	audit = registration_class.get_major_requirements()
-	audit.classes_required
+	audit.required_classes.courses
+
