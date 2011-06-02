@@ -15,6 +15,7 @@ class infosu(object):
         if not successful_login: raise Exception("Invalid credentials")
         self.get_schedule()     #We retrieve our schedule
         self.get_transcript()   #We retrieve our transcript
+        self.get_major_requirements()
 
     def login(self):
         return utilities.login(self.sid, self.pin)
@@ -51,7 +52,7 @@ class infosu(object):
 
     # Function that retrieves the mydegrees page
     def get_major_requirements(self):
-        return utilities.get_major_requirements(self.sid, self.pin)
+        self.audit = utilities.get_major_requirements(self.sid, self.pin)
 
     # Function to add class to a schedule
     def add_class(self, crn, crn2=''):
