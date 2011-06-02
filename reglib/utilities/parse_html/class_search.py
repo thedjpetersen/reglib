@@ -1,7 +1,17 @@
 import lxml.html
+import re
 
 def class_search(original_html, dep, num):
     html = lxml.html.fromstring(original_html)
+
+    # Get course desc / title via regex
+    title_regex = re.compile('\n\s+([\w\s/,]+)\r\s+\(\d\)\.')
+    #description_regex = re.compile('\(\d\)\.\s*?<.*?>\s+([\w\s/,\.]+)')
+    #description_regex_bacc = re.compile('\(\d\)\.\s*?<img .*?>\s*?</h3>\s+([\w\s/,\.]+)')
+    description_regex = re.compile('\(\d\)\.\s*?(<img .*?>)?\s*?</h3>\s+([\w\s/,\.]+)') # handles bacc core classes
+    title = title_regex.findall(original_html)[0]
+    description = description_regex.findall(original_html)[0][1]
+
     try:
         table_element  = html.get_element_by_id('ctl00_ContentPlaceHolder1_SOCListUC1_gvOfferings')
     except:
@@ -68,6 +78,11 @@ def class_search(original_html, dep, num):
                 
         one_class['department'] = dep
         one_class['number'] = num
+
+        if description:
+            one_class['description'] = description
+        if title:
+            one_class['title'] = title
         classes.append(one_class)
 
     return classes
