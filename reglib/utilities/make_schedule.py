@@ -15,6 +15,8 @@ def make_schedule(list_of_classes, term, schedule):
         if type(result_set) is not str:
             new_set = [] 
             rec_lab = []
+            if result_set is None:
+                continue
             for index, result in enumerate(result_set):
                 if result['type'] in lab_types and result['available'] > 0:
                     rec_lab.append(result)

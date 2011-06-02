@@ -36,35 +36,38 @@ def class_search(original_html, dep, num):
             #if row_headers[index] in elements_to_int:
                 #content = int(content)
 
-            if row_headers[index] == 'Day/Time/Date' and content != 'TBA':
-                fields = content.split(' ')
-                days = list(fields[0])
-                try:
-                    times = fields[1][:9].split('-')
-                    for inner_index, time in enumerate(times):
-                        times[inner_index] = time[:2] + ':' + time[2:]
-                except:
-                    times = ''
-                try:
-                    dates = fields[1][8:]
-                except:
-                    dates = ''
-                content = {"days":days, "time":times, "dates":dates,}
+            if content != 'TBA':
+                if row_headers[index] == 'Day/Time/Date': 
+                    fields = content.split(' ')
+                    days = list(fields[0])
+                    try:
+                        times = fields[1][:9].split('-')
+                        for inner_index, time in enumerate(times):
+                            times[inner_index] = time[:2] + ':' + time[2:]
+                    except:
+                        times = ''
+                    try:
+                        dates = fields[1][8:]
+                    except:
+                        dates = ''
+                    content = {"days":days, "time":times, "dates":dates}
+    
+                if row_headers[index] == 'Day/Time/Date':
+                    one_class['days'] = content['days']
+                    one_class['times'] = content['time']
+                    one_class['duration'] = content['dates']
+                else:
+                    one_class[str.lower(row_headers[index])] = content
 
-            if row_headers[index] == 'Day/Time/Date' and content != 'TBA':
-                one_class["days"] = content["days"]
-                one_class["times"] = content["time"]
-                one_class["duration"] = content["dates"]
-            else:
-                one_class[str.lower(row_headers[index])] = content
-
+        # Change dict keys to standardize and remove spaces for django to access
+        keys_to_change = ('cr', 'wl avail', 'avail', 'wl cap', 'wl curr')
+        keys_to_use = ('credits', 'wl_available', 'available', 'wl_cap', 'wl_curr')
+        for key_orig, key_replace in zip(keys_to_change, keys_to_use): 
+            if key_orig in one_class:
+                one_class[key_replace] = one_class[key_orig]
+                
         one_class['department'] = dep
         one_class['number'] = num
-        one_class['credits'] = one_class['cr']
-        one_class['wl_available'] = one_class['wl avail']
-        one_class['available'] = one_class['avail']
-        one_class['wl_cap'] = one_class['wl cap']
-        one_class['wl_curr'] = one_class['wl curr']
         classes.append(one_class)
 
     return classes
