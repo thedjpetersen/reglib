@@ -8,7 +8,7 @@ def class_search(original_html, dep, num):
     title_regex = re.compile('\n\s+([\w\s/,]+)\r\s+\(\d\)\.')
     #description_regex = re.compile('\(\d\)\.\s*?<.*?>\s+([\w\s/,\.]+)')
     #description_regex_bacc = re.compile('\(\d\)\.\s*?<img .*?>\s*?</h3>\s+([\w\s/,\.]+)')
-    description_regex = re.compile('\(\d\)\.\s*?(<img .*?>)?\s*?</h3>\s+([\w\s/,\.]+)') # handles bacc core classes
+    description_regex = re.compile('\(\d\)\.\s*?(<img .*?>)?\s*?</h3>\s+([\w\s/,\.-]+)') # handles bacc core classes
     title = title_regex.findall(original_html)[0]
 
 
