@@ -1,12 +1,12 @@
 import lxml.html
-import re
+from re import compile, findall
 
 def class_search(original_html, dep, num):
     html = lxml.html.fromstring(original_html)
 
     # Get course desc / title via regex
-    title_regex = re.compile('\n\s+([\w\s/,-]+)\r\s+\(\d\)\.')
-    description_regex = re.compile('\(\d\)\.\s*?(<img .*?>)?\s*?(<img .*?>)?\s*?</h3>\s+([\w\s/,\.-]+)') # also handles bacc core classes
+    title_regex = compile('\n\s+([\w\s/,-]+)\r\s+\(\d\)\.')
+    description_regex = compile('\(\d\)\.\s*?(<img .*?>)?\s*?(<img .*?>)?\s*?</h3>\s+([\w\s/,\.-]+)') # also handles bacc core classes
     try:
         title = title_regex.findall(original_html)[0]
     except:
