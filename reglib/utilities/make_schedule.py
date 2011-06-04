@@ -1,5 +1,6 @@
 from class_search import class_search
 from class_search_conflict import class_search_conflict
+import re
 
 def make_schedule(list_of_classes, term, schedule):
     class_types = ['Lecture', 'WWW']
@@ -8,10 +9,21 @@ def make_schedule(list_of_classes, term, schedule):
         terms = {'01':'F', '02':'W', '03':'Sp', '04':'Su'}
         term = terms[schedule.current_term[-2:]] + schedule.current_term[2:4]
     class_search_results = []
+
+    # handles the user entering a course with no spaces in between dept/num
+    course_regex = re.compile('(\w+?)(\d+)')
     
     for each_class in list_of_classes:
+
+        # insert space between dept/num if needed
+        if course_regex.match(each_class):
+            match = course_regex.findall(each_class)
+            each_class = match[0][0] + " " + match[0][1] 
+
+        # separate courses and get each course's info
         class_array = each_class.split(' ')
         result_set = class_search(class_array[0], class_array[1], term)
+
         if type(result_set) is not str:
             new_set = [] 
             rec_lab = []
