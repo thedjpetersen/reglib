@@ -4,8 +4,12 @@ import fetch_html
 from login import login
  
 def get_transcript(sid, pin):
+    """ get transcript including list of classes taken, grade, and current gpa """
+
     login_number = 2
-    for i in range(login_number):  #If we are not logged in we will loop around again
+    #If we are not logged in we will loop around again
+    for i in range(login_number):
+
         #The transcript page url
         html = fetch_html.get_transcript()
         
@@ -15,5 +19,6 @@ def get_transcript(sid, pin):
             credits = parse_html.get_credits(html)
             gpa = parse_html.get_gpa(html)
             return transcript.Transcript(html, grades, credits, gpa)
+
         else:
             login(sid, pin)

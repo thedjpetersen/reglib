@@ -3,6 +3,9 @@ from class_search_conflict import class_search_conflict
 from utilities import format_course
 
 def make_schedule(list_of_classes, term, schedule):
+    """ given a list of classes, returns all possible schedule combinations
+    such that there are no conflicts. brute force """
+
     class_types = ['Lecture', 'WWW']
     lab_types =  ['Recitation', 'Laboratory']
     if term == '':
