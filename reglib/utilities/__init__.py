@@ -7,5 +7,4 @@ from make_schedule import make_schedule
 from class_search_conflict import class_search_conflict
 from get_major_requirements import get_major_requirements
 from add_class import add_class
-from time_conflict import time_conflict
-from get_calendar import get_calendar
+import utilities

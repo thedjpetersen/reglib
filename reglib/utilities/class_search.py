@@ -2,6 +2,8 @@ import fetch_html
 import parse_html
 
 def class_search(dep, num, term=''):
+        """ searches OSU course catalog and returns list of 
+        specified courses that are the same course """
         
         html = fetch_html.class_search(dep, num)
         if not html:

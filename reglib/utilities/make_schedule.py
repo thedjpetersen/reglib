@@ -1,17 +1,26 @@
 from class_search import class_search
-from class_search_conflict import class_search_conflict
+from class_search_conflict import class_search_conflict 
+from utilities import format_course
 
 def make_schedule(list_of_classes, term, schedule):
+    """ given a list of classes, returns all possible schedule combinations
+    such that there are no conflicts. brute force """
+
     class_types = ['Lecture', 'WWW']
     lab_types =  ['Recitation', 'Laboratory']
     if term == '':
         terms = {'01':'F', '02':'W', '03':'Sp', '04':'Su'}
         term = terms[schedule.current_term[-2:]] + schedule.current_term[2:4]
     class_search_results = []
-    
+
     for each_class in list_of_classes:
+
+        each_class = format_course(each_class)
+
+        # separate courses and get each course's info
         class_array = each_class.split(' ')
         result_set = class_search(class_array[0], class_array[1], term)
+
         if type(result_set) is not str:
             new_set = [] 
             rec_lab = []

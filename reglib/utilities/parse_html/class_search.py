@@ -1,22 +1,20 @@
 import lxml.html
-import re
+from re import compile, findall
 
 def class_search(original_html, dep, num):
     html = lxml.html.fromstring(original_html)
 
     # Get course desc / title via regex
-    title_regex = re.compile('\n\s+([\w\s/,]+)\r\s+\(\d\)\.')
-    #description_regex = re.compile('\(\d\)\.\s*?<.*?>\s+([\w\s/,\.]+)')
-    #description_regex_bacc = re.compile('\(\d\)\.\s*?<img .*?>\s*?</h3>\s+([\w\s/,\.]+)')
-    description_regex = re.compile('\(\d\)\.\s*?(<img .*?>)?\s*?</h3>\s+([\w\s/,\.-]+)') # handles bacc core classes
-    title = title_regex.findall(original_html)[0]
-
-
-    description = description_regex.findall(original_html)
-    if description:
-        description = description[0]
-    if description:
-        description = description[1]
+    title_regex = compile('\n\s+([\w\s/,-]+)\r\s+\(\d\)\.')
+    description_regex = compile('\(\d\)\.\s*?(<img .*?>)?\s*?(<img .*?>)?\s*?</h3>\s+([\w\s/,\.-]+)') # also handles bacc core classes
+    try:
+        title = title_regex.findall(original_html)[0]
+    except:
+        title = None
+    try:
+        description = description_regex.findall(original_html)[0][2]
+    except:
+        description = None
 
     try:
         table_element  = html.get_element_by_id('ctl00_ContentPlaceHolder1_SOCListUC1_gvOfferings')

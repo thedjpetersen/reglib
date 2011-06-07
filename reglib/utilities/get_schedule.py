@@ -3,8 +3,9 @@ import fetch_html
 import schedule
 from login import login
 
-# Function to set our schedule variable
 def get_schedule(sid, pin):
+    """ Function to set our schedule variable with current classes and term """
+
     login_number = 2
     current_term = ''
     for i in range(login_number):

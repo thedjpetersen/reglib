@@ -28,6 +28,7 @@ reg_class.get_transcript()
 #########
 #SCHEDULE
 #########
+#print reg_class.schedule.current_term
 #print reg_class.schedule.current_classes
 #print reg_class.schedule.schedule
 
@@ -47,9 +48,9 @@ reg_class.get_transcript()
 ##########
 #MYDEGREES
 ##########
-audit = reg_class.get_major_requirements()
+#audit = reg_class.get_major_requirements()
 #print audit
-for instance in audit.required_classes:
-    for course in instance.courses:
-        print course
+#for instance in audit.required_classes:
+#    for course in instance.courses:
+#        print course
 

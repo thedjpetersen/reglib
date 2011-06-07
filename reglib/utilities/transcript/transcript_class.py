@@ -1,29 +1,37 @@
 import re
 
 class Transcript(object):
+    """ course transcript includes list of classes taken, grades, # credits, gpa """
+
     def __init__(self, html, grades, credits, gpa):
         self.grades = grades
         self.credits = credits # dictionary (institution, transfer, overall) 
         self.gpa = gpa # dictionary (osu ,transfer)
 
-    def has_class(self, dep, cn):
-        cn = cn.upper()
-        dep = dep.upper()
+    def has_class(self, department, number):
+        """ returns true/false whether class has been taken regardless of passing """
+
+        number = number.upper()
+        department = department.upper()
         for entry in self.grades:
-            if entry['department'] == dep and entry['number'] == cn:
-                return entry
+            if entry['department'] == department and entry['number'] == number:
+                return True
         return False
 
-    def has_passed_class(self, dep, cn):
-        cn = cn.upper()
-        dep = dep.upper()
+    def has_passed_class(self, department, number):
+        """ returns true/false whether a pass has been classed (c and above) """
+
+        number = number.upper()
+        department = department.upper()
         passing_grades = ['A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C']
         for entry in self.grades:
-            if entry['department'] == dep and entry['number'] == cn and entry['grade'] in passing_grades:
+            if entry['department'] == department and entry['number'] == number and entry['grade'] in passing_grades:
                 return True
         return False
 
     def grade_distribution(self):
+        """ returns dictionary of grades and their cardinality """       
+    
         grades_array = []
         for element in self.grades:
             grades_array.append(element['grade'])
@@ -39,6 +47,7 @@ class Transcript(object):
         return seen
 
     def sort_by_term(self):
+        """ given list of courses, sorts by term by most recent """
 
         fall = []
         summer = []

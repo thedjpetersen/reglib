@@ -4,6 +4,9 @@ import mydegrees
 from login import login
 
 def get_major_requirements(sid, pin):
+    """ use mydegrees to get various requirements to fulfill major such as
+    courses needed """
+
     login_number = 2
     for i in range(login_number):
         html = fetch_html.infosu_mydegrees_redirect()

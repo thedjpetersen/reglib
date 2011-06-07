@@ -56,8 +56,6 @@ class infosu(object):
 
     # Function to add class to a schedule
     def add_class(self, crn, crn2=''):
-        return utilities.add_class(crn, crn2, self.schedule)
+        return utilities.add_class(self.sid, self.pin, crn, crn2, self.schedule)
 
-    def get_calendar(self):
-        return utilities.get_calendar(self.sid, self.pin, self.schedule.current_term)
 
