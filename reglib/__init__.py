@@ -2,7 +2,25 @@ import utilities
 
 class infosu(object):
 
-    def __init__(self, sid, pin):
+    def __getattribute__(self, name):
+        try:
+            return object.__getattribute__(self,name)
+        except AttributeError:
+            return self.get_missing_attrs(name)
+    
+    def get_missing_attrs(self, name):
+        if name == 'schedule':
+            self.get_schedule()
+            return self.schedule 
+        if name == 'transcript':
+            self.get_transcript()
+            return self.transcript
+        if name == 'audit':
+            self.get_major_requirements()
+            return self.audit
+        return "Missing attribute: " + name
+
+    def __init__(self, sid, pin, lazy_load=False):
         #Set up the your identification to be posted when you login
         self.sid = sid      #this is our student id number
         self.pin = pin      #this is our student pin
@@ -13,9 +31,10 @@ class infosu(object):
         
         #If our users credentials were not correct raise an exception to tell them
         if not successful_login: raise Exception("Invalid credentials")
-        self.get_schedule()     #We retrieve our schedule
-        self.get_transcript()   #We retrieve our transcript
-        self.get_major_requirements()
+        if not lazy_load:
+            self.get_schedule()     #We retrieve our schedule
+            self.get_transcript()   #We retrieve our transcript
+            self.get_major_requirements()
 
     def login(self):
         return utilities.login(self.sid, self.pin)
