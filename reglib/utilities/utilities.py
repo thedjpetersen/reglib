@@ -4,7 +4,7 @@ from re import match, findall, compile
 
 def format_course(course):
     """ puts course in [department] [number] format with space """
-    course_regex = compile('(\w+?)(\d+)')
+    course_regex = compile('(\w+?)(\d+\w?)')
     if course_regex.match(course):
         match = course_regex.findall(course)
         return match[0][0] + " " + match[0][1]
@@ -12,7 +12,7 @@ def format_course(course):
 
 def course_to_dep_and_num(course):
     """ separates course into a dictionary with department and number """
-    course_regex = compile('(\w+) (\d+)')
+    course_regex = compile('(\w+) (\d+\w?)')
     if course_regex.match(course):
         match = course_regex.findall(course)
         return {'department': match[0][0], 'number': match[0][1]}
