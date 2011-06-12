@@ -3,8 +3,7 @@ import parse_html
 from login import login
 
 def add_class(sid, pin, crn, crn2, schedule):
-    """ registers for a class (with optional lab/rec). 
-    since each crn is unique, no need to specify term """
+    """ registers for a class, takes two crns for lab/rec """
 
     login_number = 2
     for i in range(login_number):

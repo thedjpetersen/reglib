@@ -16,9 +16,11 @@ def current_term_form(current_term):
         
 def add_drop_page(form_data):
     add_drop_page_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskfreg.P_AltPin'
+    header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskfreg.P_AltPin'
     request = urllib2.Request(add_drop_page_url, form_data, headers=header_values)
     response = opener.open(request)
     html = response.read()
+    return html
     
 def add_class(values):
     #Set up data to be posted
