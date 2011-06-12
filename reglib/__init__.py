@@ -10,7 +10,7 @@ class infosu(object):
     
     def get_missing_attrs(self, name):
         if name == 'schedule':
-            self.get_schedule()
+            self.get_current_schedule()
             return self.schedule 
         if name == 'transcript':
             self.get_transcript()
@@ -32,9 +32,10 @@ class infosu(object):
         #If our users credentials were not correct raise an exception to tell them
         if not successful_login: raise Exception("Invalid credentials")
         if not lazy_load:
-            self.get_schedule()     #We retrieve our schedule
+            self.get_current_schedule()     #We retrieve our schedule
             self.get_transcript()   #We retrieve our transcript
             self.get_major_requirements()
+            self.get_next_schedule()
 
     def login(self):
         return utilities.login(self.sid, self.pin)
@@ -45,8 +46,12 @@ class infosu(object):
         self.transcript = utilities.get_transcript(self.sid, self.pin)
 
     # Function to set our schedule variable
-    def get_schedule(self):
-        self.schedule = utilities.get_schedule(self.sid, self.pin)
+    def get_current_schedule(self):
+        self.schedule = utilities.get_schedule(self.sid, self.pin, False)
+
+    # get schedule for next term
+    def get_next_schedule(self): 
+        self.next_schedule = utilities.get_schedule(self.sid, self.pin, True) 
 
     # This function searches for classes
     # It can take a term as a parameter as well
