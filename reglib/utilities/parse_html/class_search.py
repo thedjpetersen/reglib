@@ -4,6 +4,7 @@ from re import compile, findall
 def class_search(original_html, dep, num):
     html = lxml.html.fromstring(original_html)
 
+    ###################################
     # Get course desc / title via regex
     title_regex = compile('\n\s+([\w\s/,-]+)\r\s+\(\d\)\.')
     description_regex = compile('\(\d\)\.\s*?(<img .*?>)?\s*?(<img .*?>)?\s*?</h3>\s+([\w\s/,\.-]+)') # also handles bacc core classes
@@ -15,6 +16,7 @@ def class_search(original_html, dep, num):
         description = description_regex.findall(original_html)[0][2]
     except:
         description = None
+    ###################################
 
     try:
         table_element  = html.get_element_by_id('ctl00_ContentPlaceHolder1_SOCListUC1_gvOfferings')
@@ -38,17 +40,6 @@ def class_search(original_html, dep, num):
 
             if row_headers[index] == 'Restrictions' and content != '':
                 content = content.split(':')[1].strip().replace('\n', '').replace('\r', '').replace('  ', '')
-                '''
-                content = (' ').join(content.rsplit()).replace(u' College\xc2 Limitations', '').replace('(', '').replace(')','').split(' and ')
-                for inner_index, block in enumerate(content):
-                    content[inner_index] = block.split(' or ')
-                for outer_index, outer_element in enumerate(content):
-                    for inner_index, inner_element in enumerate(outer_element):
-                        fields = inner_element.split(' ')
-                        content[outer_index][inner_index] = {'Department':str(fields[0]), 'Course Number':fields[1]}
-                '''
-            #if row_headers[index] in elements_to_int:
-                #content = int(content)
 
             if content != 'TBA':
                 if row_headers[index] == 'Day/Time/Date': 
@@ -72,6 +63,11 @@ def class_search(original_html, dep, num):
                     one_class['duration'] = content['dates']
                 else:
                     one_class[str.lower(row_headers[index])] = content
+            else:
+                one_class['days'] = 'TBA'
+                one_class['times'] = 'TBA'
+                one_class['duration'] = 'TBA'
+                one_class['location'] = 'TBA'
 
         # Change dict keys to standardize and remove spaces for django to access
         keys_to_change = ('cr', 'wl avail', 'avail', 'wl cap', 'wl curr')

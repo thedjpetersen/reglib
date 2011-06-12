@@ -3,10 +3,10 @@ import utilities
 class infosu(object):
 
     def __getattribute__(self, name):
-        try:
-            return object.__getattribute__(self,name)
-        except AttributeError:
-            return self.get_missing_attrs(name)
+        #try:
+        return object.__getattribute__(self,name)
+        #except AttributeError:
+        #    return self.get_missing_attrs(name)
     
     def get_missing_attrs(self, name):
         if name == 'schedule':
