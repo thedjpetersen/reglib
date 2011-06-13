@@ -18,7 +18,7 @@ reg_class = reglib.infosu('931596171', '544354')
 ##############
 # TRANSCRIPT
 ##############
-reg_class.get_transcript()
+#reg_class.get_transcript()
 #print reg_class.transcript.sort_by_term()
 #print reg_class.transcript.credits
 #print reg_class.transcript.has_class('ph', '211') # Summary of class already passed
@@ -29,8 +29,12 @@ reg_class.get_transcript()
 #SCHEDULE
 #########
 #print reg_class.schedule.current_term
-#print reg_class.schedule.current_classes
+print reg_class.schedule.current_classes
 #print reg_class.schedule.schedule
+#print reg_class.schedule.current_term
+print reg_class.next_schedule.current_classes
+#print reg_class.next_schedule.schedule
+#print reg_class.next_schedule.current_term
 
 ##########
 #SEARCHING

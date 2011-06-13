@@ -7,4 +7,5 @@ from make_schedule import make_schedule
 from class_search_conflict import class_search_conflict
 from get_major_requirements import get_major_requirements
 from add_class import add_class
+from select_term import select_term
 import utilities

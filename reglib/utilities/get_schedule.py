@@ -18,7 +18,6 @@ def get_schedule(sid, pin, Next):
                 term = parse_html.get_current_term(html)
                 if Next:
                     term = to_next_term(term)
-                    print term
             else:
                 courses = parse_html.get_current_classes(html) 
                 return schedule.Schedule(html, courses, term)

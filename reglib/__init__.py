@@ -34,8 +34,8 @@ class infosu(object):
         if not lazy_load:
             self.get_current_schedule()     #We retrieve our schedule
             self.get_transcript()   #We retrieve our transcript
-            self.get_major_requirements()
             self.get_next_schedule()
+            self.get_major_requirements()
 
     def login(self):
         return utilities.login(self.sid, self.pin)
@@ -50,7 +50,10 @@ class infosu(object):
         self.schedule = utilities.get_schedule(self.sid, self.pin, False)
 
     # get schedule for next term
-    def get_next_schedule(self): 
+    def get_next_schedule(self):
+        # login again to make sure we can select a different term
+        self.login() 
+        self.login() 
         self.next_schedule = utilities.get_schedule(self.sid, self.pin, True) 
 
     # This function searches for classes
@@ -81,5 +84,6 @@ class infosu(object):
     # Function to add class to a schedule
     def add_class(self, crn, crn2=''):
         return utilities.add_class(self.sid, self.pin, crn, crn2, self.schedule)
+    
 
 
