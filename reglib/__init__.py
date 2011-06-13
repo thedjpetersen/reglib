@@ -3,22 +3,19 @@ import utilities
 class infosu(object):
 
     def __getattribute__(self, name):
-        #try:
-        return object.__getattribute__(self,name)
-        #except AttributeError:
-        #    return self.get_missing_attrs(name)
-    
-    def get_missing_attrs(self, name):
-        if name == 'schedule':
-            self.get_current_schedule()
-            return self.schedule 
-        if name == 'transcript':
-            self.get_transcript()
-            return self.transcript
-        if name == 'audit':
-            self.get_major_requirements()
-            return self.audit
-        return "Missing attribute: " + name
+        try:
+            return object.__getattribute__(self,name)
+        except AttributeError:
+            if name == 'schedule':
+                self.get_current_schedule()
+                return self.schedule 
+            if name == 'transcript':
+                self.get_transcript()
+                return self.transcript
+            if name == 'audit':
+                self.get_major_requirements()
+                return self.audit
+            raise
 
     def __init__(self, sid, pin, lazy_load=False):
         #Set up the your identification to be posted when you login
