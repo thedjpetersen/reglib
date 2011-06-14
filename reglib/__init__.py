@@ -21,7 +21,7 @@ class infosu(object):
 
             raise
 
-    def __init__(self, sid, pin, lazy_load=False):
+    def __init__(self, sid, pin, lazy_load=True):
         #Set up the your identification to be posted when you login
         self.sid = sid      #this is our student id number
         self.pin = pin      #this is our student pin
