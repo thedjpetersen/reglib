@@ -82,5 +82,10 @@ class infosu(object):
     def add_class(self, crn, crn2=''):
         return utilities.add_class(self.sid, self.pin, crn, crn2, self.schedule)
     
+    # add multiple courses via list, lecture/lab-rec pairs list within the list
+    def add_classes(self, crns):
+        return utilities.add_classes(self.sid, self.pin, crns, self.schedule)
+        
+    
 
 
