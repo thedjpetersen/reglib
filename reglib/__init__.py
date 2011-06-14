@@ -79,8 +79,8 @@ class infosu(object):
         self.audit = utilities.get_major_requirements(self.sid, self.pin)
 
     # Function to add class to a schedule
-    def add_class(self, crn, crn2=''):
-        return utilities.add_class(self.sid, self.pin, crn, crn2, self.schedule)
+    def add_class(self, crns=[]):
+        return utilities.add_class(self.sid, self.pin, crns, self.schedule)
     
 
 

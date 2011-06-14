@@ -2,7 +2,7 @@ import fetch_html
 import parse_html
 from login import login
 
-def add_class(sid, pin, crn, crn2, schedule):
+def add_class(sid, pin, crns, schedule):
     """ registers for a class, takes two crns for lab/rec """
 
     login_number = 2
@@ -21,7 +21,7 @@ def add_class(sid, pin, crn, crn2, schedule):
         
         html = fetch_html.add_drop_page(form_data)
         # Get a dictionary of values to post as the form
-        values = parse_html.add_class(html, crn, crn2)
+        values = parse_html.add_class(html, crns)
         html = fetch_html.add_class(values)
         
         # See if there were any errors when posting the form
