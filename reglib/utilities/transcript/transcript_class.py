@@ -35,7 +35,6 @@ class Transcript(object):
         grades_array = []
         for element in self.grades:
             grades_array.append(element['grade'])
-            grades_array.sort()
         
         seen = {}
         for item in grades_array:
@@ -44,7 +43,14 @@ class Transcript(object):
                 continue
             seen[item] += 1
         
-        return seen
+        grades_array = [{'A+': 0}, {'A':0}, {'A-': 0}, {'B+': 0}, {'B': 0}, {'B-': 0}, {'C+': 0}, {'C': 0}, {'C-': 0}, {'F': 0}, {'D N': 0}, {'W': 0}]
+        for grade in grades_array:
+            for letter in grade:
+                try:
+                    grade[letter] = seen[letter]
+                except:
+                    grade[letter] = 0
+        return grades_array
 
     def sort_by_term(self):
         """ given list of courses, sorts by term by most recent """
