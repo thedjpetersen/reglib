@@ -54,7 +54,7 @@ def make_schedule(list_of_classes, term, schedule):
                 for index, member in enumerate(combination):
                     flag = False
 
-                    if member['department'] == result['department'] and member['number'] == result['number'] and member['type'] == result['type']:
+                    if (member['department'] == result['department'] and member['number'] == result['number']) and ((member['type'] in class_types and result['type'] in class_types) or (member['type'] in lab_types and result['type'] in lab_types)):
                         flag = True 
                     if class_search_conflict(result, member):
                         flag = True 
