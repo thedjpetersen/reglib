@@ -15,6 +15,10 @@ class infosu(object):
             if name == 'audit':
                 self.get_major_requirements()
                 return self.audit
+            if name =='next_schedule':
+                self.get_next_schedule() 
+                return self.next_schedule   
+
             raise
 
     def __init__(self, sid, pin, lazy_load=False):
