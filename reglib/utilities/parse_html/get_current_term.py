@@ -1,4 +1,5 @@
 import lxml.html
+import reglib
 
 def get_current_term(original_html):
     html = lxml.html.fromstring(original_html)

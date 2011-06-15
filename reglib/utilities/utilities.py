@@ -24,6 +24,34 @@ def time_conflict(time, time1):
         return True
     return False
 
+def adjust_schedule_term(infosu_term):
+    """ infosu's term years rollover at fall as opposed to winter, need to adjust to match rest of library """
+    year = infosu_term[:4]
+    term = infosu_term[-2:]
+
+    if term == '00' or term == '01':
+        year = str(int(year)-1)
+
+    return year + term
+
+def format_term(term):
+    """ format yyyyxx term to Fxx, Wxx, Spxx, Suxx """
+
+    year = term[:4][-2:]
+    term = term[-2:]
+    if term == '00':
+        term = "Su"
+    elif term == '01':
+        term = "F"
+    elif term == '02':
+        term = "W"
+    elif term == '03':
+        term = "Sp"
+    elif term == '04':
+        term = "Su"
+      
+    return term + year
+
 def to_next_term(current_term):
     """ get the next term in YYYYXX format with XX being term from 01 to 04 starting from fall and ending in summer (ex: 201103 is Spring 2011). new school year starts in the fall"""
     year = int(current_term[:4])
