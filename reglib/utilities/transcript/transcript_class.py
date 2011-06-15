@@ -3,6 +3,7 @@ class Transcript(object):
 
     def __init__(self, html, grades, credits, gpa):
         self.grades = grades
+        self.sort_by_term()
         self.credits = credits # dictionary (institution, transfer, overall) 
         self.gpa = gpa # dictionary (osu ,transfer)
 
