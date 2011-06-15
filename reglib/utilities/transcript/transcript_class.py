@@ -63,3 +63,26 @@ class Transcript(object):
             return 1
         else:
             return -1
+
+    def group_compare(self, group1, group2):
+        terms = {'Fall':0, 'Winter':1, 'Spring':2, 'Summer':3}
+        values1 = group1.keys()[0].split(' ')
+        values2 = group2.keys()[0].split(' ')
+        if terms[values1[0]] > terms[values2[0]] or values1[1] > values2[1]: 
+            return 1
+        else:
+            return -1
+
+    def group_by_term(self):
+        groups = {}
+        for entry in self.grades:
+            current_term = entry['term']
+            if current_term in groups:
+                groups[current_term].append(entry)
+            else:
+                groups[current_term] = [entry]
+        
+        groups_array = [{key:value} for key,value in groups.iteritems()]
+        groups_array = sorted(groups_array, cmp=self.group_compare)
+
+        return groups_array
