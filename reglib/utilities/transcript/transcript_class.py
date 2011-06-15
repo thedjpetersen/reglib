@@ -52,7 +52,20 @@ class Transcript(object):
                     grade[letter] = 0
         return grades_array
 
+    #David and Kevin sort - amazing
     def sort_by_term(self):
+        self.grades = sorted(self.grades, cmp=self.compare)
+
+    def compare(self, grade1, grade2):
+        terms = {'Fall':0, 'Winter':1, 'Spring':2, 'Summer':3}
+        values1 = grade1['term'].split(' ')
+        values2 = grade2['term'].split(' ')
+        if terms[values1[0]] > terms[values2[0]] or values1[1] > values2[1]: 
+            return 1
+        else:
+            return -1
+
+    def kevin_sort(self):
         """ given list of courses, sorts by term by most recent """
 
         fall = []
