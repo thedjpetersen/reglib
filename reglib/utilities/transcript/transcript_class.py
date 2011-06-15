@@ -1,5 +1,3 @@
-import re
-
 class Transcript(object):
     """ course transcript includes list of classes taken, grades, # credits, gpa """
 
