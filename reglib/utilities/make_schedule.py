@@ -1,6 +1,6 @@
 from class_search import class_search
 from class_search_conflict import class_search_conflict 
-from utilities import format_course
+from utilities import format_course, adjust_schedule_term
 
 def make_schedule(list_of_classes, term, schedule):
     """ given a list of classes, returns all possible schedule combinations
@@ -9,8 +9,9 @@ def make_schedule(list_of_classes, term, schedule):
     class_types = ['Lecture', 'WWW']
     lab_types =  ['Recitation', 'Laboratory']
     if term == '':
-        terms = {'01':'F', '02':'W', '03':'Sp', '04':'Su'}
-        term = terms[schedule.current_term[-2:]] + schedule.current_term[2:4]
+        adjusted_term = adjust_schedule_term(schedule.current_term)
+        terms = {'00':'F', '01':'W', '02':'Sp', '03':'Su'}
+        term = terms[adjusted_term[-2:]] + adjusted_term[2:4] 
     class_search_results = []
 
     for each_class in list_of_classes:
@@ -42,16 +43,16 @@ def make_schedule(list_of_classes, term, schedule):
 
     class_set = []
     combinations = []
+
+    for res_set in class_search_results:
+        for result in res_set:
+
     for result_set in class_search_results:
         for result in result_set:
-            combinations.append([result])
+            combination = [result]
             
-            is_lab = False
-            if result['type'] in lab_types:
-                is_lab = True
-
-            for inner_index, combination in enumerate(combinations):
-                for index, member in enumerate(combination):
+            for class_set in (class_search_results):
+                for index, member in enumerate(class_set):
                     flag = False
 
                     if (member['department'] == result['department'] and member['number'] == result['number']) and ((member['type'] in class_types and result['type'] in class_types) or (member['type'] in lab_types and result['type'] in lab_types)):
@@ -65,6 +66,8 @@ def make_schedule(list_of_classes, term, schedule):
                             combination.remove(member)
                         
                 if not flag:
-                    combination.append(result)
+                    combination.append(member)
+
+            combinations.append(combination)
 
     return {"combinations" : combinations, "classes_possible" : len(class_search_results)}

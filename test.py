@@ -3,7 +3,7 @@ import reglib
 ###############
 # INSTANTIATION
 ###############
-reg_class = reglib.infosu('931596171', '544354')
+reg_class = reglib.infosu('930608334', '121088')
 #print reg_class
 #result = reg_class.make_schedule(['ph 212'],'F11')
 #for course in result:
@@ -29,10 +29,10 @@ reg_class = reglib.infosu('931596171', '544354')
 #SCHEDULE
 #########
 #print reg_class.schedule.current_term
-print reg_class.schedule.current_classes
+#print reg_class.schedule.current_classes
 #print reg_class.schedule.schedule
 #print reg_class.schedule.current_term
-print reg_class.next_schedule.current_classes
+#print reg_class.next_schedule.current_classes
 #print reg_class.next_schedule.schedule
 #print reg_class.next_schedule.current_term
 
@@ -46,7 +46,16 @@ print reg_class.next_schedule.current_classes
 ###################
 #POSSIBLE SCHEDULES
 ###################
-#print reg_class.make_schedule(['cs 261', 'fr 213', 'cs 275', 'mth 232'])
+ms = reg_class.make_schedule(['cs 160', 'fr 211', 'cs 275', 'mth 231'])
+combinations = ms['combinations']
+classes_possible = ms['classes_possible']
+
+for index, combination in enumerate(combinations):
+    print "Combination " + str(index) 
+    for course in combination:
+        print ''.join(['(', course['type'],') ',course['department'],' ',course['number'],' ',course['crn']])
+    print
+
 #print reg_class.make_schedule(['cs 162', 'mth 111'], 'F12')
 
 ##########
