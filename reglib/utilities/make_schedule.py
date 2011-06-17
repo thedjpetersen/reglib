@@ -48,27 +48,31 @@ def make_schedule(list_of_classes, term, schedule):
     permutations = []
 
     for index, course_set in enumerate(class_search_results):
+        new_permutations = []
         for course in course_set:
             # Populate our basic permutation
             if index == 0:
                 permutations.append([course])
             else:
-                new_permutations = []
                 for permutation in permutations:
                     if permutation:
-                        new_permutation = permutation
+                        new_permutation = list(permutation)
                         new_permutation.append(course)
-                        new_permutations.append(permutation)
+                        new_permutations.append(new_permutation)
                 
-                permutations = new_permutations
-                new_permutations = []
+        if index != 0:
+            permutations = list(new_permutations)
+            new_permutations = []
 
-        print '\nPass numeber #' + str(index+1) + '\n'
-        for inner_index, permutation in enumerate(permutations):
-            print 'Permutation #' + str(inner_index+1)  + ' ' + str([''.join(['(',course['type'],') ',course['department'],' ', course['number'], ' ', course['crn']]) for course in permutation])
-    
-    return permutations
+    for index, permutation in enumerate(permutations):
+        if index == 0:
+            continue
+        for inner_index, course in enumerate(permutation):
+            if class_search_conflict(course, permutation[inner_index-1]):
+                permutation.remove(permutation[inner_index-1])
 
+    return {"combinations" : permutations, "classes_possible" : len(class_search_results)}
+#    for permutation in permutations:
 
 '''
     for result_set in class_search_results:

@@ -46,17 +46,10 @@ reg_class = reglib.infosu('930608334', '121088')
 ###################
 #POSSIBLE SCHEDULES
 ###################
-print "Permutations: " + str(len(reg_class.make_schedule(['cs 160', 'fr 211', 'cs 275', 'mth 231'])))
-'''
-combinations = ms['combinations']
-classes_possible = ms['classes_possible']
-
-for index, combination in enumerate(combinations):
-    print "Combination " + str(index) 
-    for course in combination:
-        print ''.join(['(', course['type'],') ',course['department'],' ',course['number'],' ',course['crn']])
-    print
-'''
+#permutations = reg_class.make_schedule(['fr 211', 'cs 160', 'cs 275', 'mth 231'])
+#for index, permutation in enumerate(permutations):
+#    print "Permutation " + str(index+1) + ": " + str([''.join(['(',course['type'],') ', course['department'], ' ', course['number'], ' ', course['crn']]) for course in permutation])
+print "\nPermutations: " + str(len(permutations))
 #print reg_class.make_schedule(['cs 162', 'mth 111'], 'F12')
 
 ##########
