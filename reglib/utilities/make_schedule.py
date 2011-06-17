@@ -63,8 +63,9 @@ def make_schedule(list_of_classes, term, schedule):
                 permutations = new_permutations
                 new_permutations = []
 
-        for index, permutation in enumerate(permutations):
-            print 'Permutation #' + str(index+1)  + ' ' + str([''.join(['(',course['type'],') ',course['department'],' ', course['number'], ' ', course['crn']]) for course in permutation])
+        print '\nPass numeber #' + str(index+1) + '\n'
+        for inner_index, permutation in enumerate(permutations):
+            print 'Permutation #' + str(inner_index+1)  + ' ' + str([''.join(['(',course['type'],') ',course['department'],' ', course['number'], ' ', course['crn']]) for course in permutation])
     
     return permutations
 
