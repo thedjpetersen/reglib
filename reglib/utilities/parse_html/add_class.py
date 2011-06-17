@@ -1,9 +1,9 @@
 import lxml.html
 
-def add_class(original_html, crns=[]):
+def add_class(original_html, crn1, crn2=''):
     html = lxml.html.fromstring(original_html)
-    for index, crn in enumerate(crns):
-        html.get_element_by_id("crn_id"+str(index+1)).value = crn
+    html.get_element_by_id("crn_id1").value = crn1
+    html.get_element_by_id("crn_id2").value = crn2
     form = html.forms[1]
     #return form.form_values().append(('REG_BTN', 'Submit Changes'))
     values = form.form_values()

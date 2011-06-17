@@ -34,8 +34,7 @@ class infosu(object):
         if not successful_login: raise Exception("Invalid credentials")
         if not lazy_load:
             self.get_current_schedule()     #We retrieve our schedule
-            self.get_transcript()   #We retrieve our transcript
-            self.get_next_schedule()
+            self.get_transcript()   #We retrieve our transcript self.get_next_schedule()
             self.get_major_requirements()
 
     def login(self):
@@ -83,8 +82,8 @@ class infosu(object):
         self.audit = utilities.get_major_requirements(self.sid, self.pin)
 
     # Function to add class to a schedule
-    def add_class(self, crns=[]):
-        return utilities.add_class(self.sid, self.pin, crns, self.schedule)
+    def add_class(self, crn1, crn2):
+        return utilities.add_class(self.sid, self.pin, crn1, crn2, self.schedule)
     
     # add multiple courses via list, lecture/lab-rec pairs list within the list
     def add_classes(self, crns):
