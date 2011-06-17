@@ -44,8 +44,31 @@ def make_schedule(list_of_classes, term, schedule):
     class_set = []
     combinations = []
 
-    for res_set in class_search_results:
-        for result in res_set:
+'''
+    permutations = []
+
+    for index, course_set in enumerate(class_search_results):
+        for course in course_set:
+            # Populate our basic permutation
+            if index == 0:
+                permutations.append([course])
+            else:
+                new_permutations = []
+                for permutation in permutations:
+                    if permutation:
+                        new_permutation = permutation
+                        new_permutation.append(course)
+                        new_permutations.append(permutation)
+                
+                permutations = new_permutations
+                new_permutations = []
+
+            for permutation in permutations:
+                print [''.join(['(',course['type'],') ',course['department'],' ', course['number'], ' ', course['crn']]) for course in permutation]
+    
+    return permutations
+
+'''
 
     for result_set in class_search_results:
         for result in result_set:
@@ -71,3 +94,4 @@ def make_schedule(list_of_classes, term, schedule):
             combinations.append(combination)
 
     return {"combinations" : combinations, "classes_possible" : len(class_search_results)}
+
