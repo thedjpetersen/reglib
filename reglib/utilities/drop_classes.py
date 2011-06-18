@@ -2,8 +2,8 @@ import fetch_html
 import parse_html
 from login import login
 
-def add_class(sid, pin, crn1, crn2, schedule):
-    """ registers for a class, takes two crns for lab/rec """
+def drop_classes(sid, pin, crn_list, schedule):
+    """ drops a class, takes a crn or two for lec/lab """
 
     login_number = 2
     for i in range(login_number):
@@ -20,9 +20,8 @@ def add_class(sid, pin, crn1, crn2, schedule):
             continue
         
         html = fetch_html.add_drop_page(form_data)
+
         # Get a dictionary of values to post as the form
-        values = parse_html.add_class(html, crn1, crn2)
-        html = fetch_html.add_class(values)
+        values = parse_html.drop_classes(html, crn_list)
+        return values
         
-        # See if there were any errors when posting the form
-        return parse_html.add_class_has_errors(html) 

@@ -2,7 +2,7 @@ from browser_clone import header_values, opener
 import urllib
 import urllib2
 
-def setup_ad_page():
+def setup_add_drop_page():
     add_drop_page_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskfreg.P_AltPin'
     header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_GenMenu?name=bmenu.P_RegMnu'
     request = urllib2.Request(add_drop_page_url, headers = header_values)
