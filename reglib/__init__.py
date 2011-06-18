@@ -48,6 +48,9 @@ class infosu(object):
 
     # Function to set our schedule variable
     def get_current_schedule(self):
+        # login again to make sure we can select a different term
+        self.login() 
+        self.login() 
         self.schedule = utilities.get_schedule(self.sid, self.pin, False)
 
     # get schedule for next term
