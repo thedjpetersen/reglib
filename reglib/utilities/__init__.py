@@ -10,3 +10,4 @@ from add_class import add_class
 from add_classes import add_classes
 from select_term import select_term
 from utilities import to_prev_term, to_next_term, format_term, adjust_schedule_term
+from drop_classes import drop_classes
