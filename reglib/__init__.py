@@ -36,6 +36,7 @@ class infosu(object):
             self.get_current_schedule()     #We retrieve our schedule
             self.get_transcript()   #We retrieve our transcript self.get_next_schedule()
             self.get_major_requirements()
+            self.get_next_schedule()
 
     def login(self):
         return utilities.login(self.sid, self.pin)
@@ -82,7 +83,7 @@ class infosu(object):
         self.audit = utilities.get_major_requirements(self.sid, self.pin)
 
     # Function to add class to a schedule
-    def add_class(self, crn1, crn2):
+    def add_class(self, crn1, crn2=''):
         return utilities.add_class(self.sid, self.pin, crn1, crn2, self.schedule)
     
     # add multiple courses via list, lecture/lab-rec pairs list within the list
