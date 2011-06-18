@@ -21,7 +21,8 @@ def drop_classes(sid, pin, crn_list, schedule):
         
         html = fetch_html.add_drop_page(form_data)
 
-        # Get a dictionary of values to post as the form
+        # Gets list of action_ids which are form values to submit 
         values = parse_html.drop_classes(html, crn_list)
+        html = fetch_html.drop_classes(values)
         return values
         

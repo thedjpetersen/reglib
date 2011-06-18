@@ -34,3 +34,7 @@ def add_class(values):
 
     html = response.read()
     return html
+
+def drop_classes(values):
+    # Set up data to be posted
+    return ''
