@@ -37,4 +37,15 @@ def add_class(values):
 
 def drop_classes(values):
     # Set up data to be posted
-    return ''
+
+    form_data = urllib.urlencode(values)
+    header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskfreg.P_AltPin'
+    submit_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwckcoms.P_Regs'
+
+    request = urllib2.Request(submit_url, form_data, headers=header_values)
+    # Request page with CRNs of classes to add
+    response = opener.open(request)
+
+    html = response.read()
+    return html
+

@@ -31,6 +31,15 @@ def drop_classes(original_html, crn_list):
             if crn == infosu_crn:
                 action_id_list.append("action_id" + str(index+1)) # action_id starts at 1
                 break
+
+    
+    # set each course to drop in the dropdown boxes (from value '' to 'DX')
+    for action_id in action_id_list:
+        html.get_element_by_id(action_id)._value__set('DX') # set to drop
+
+    form = html.forms[1]
+    values = form.form_values()
+    values.append(('REG_BTN', 'Submit Changes'))
                 
-    return action_id_list
+    return values
 
