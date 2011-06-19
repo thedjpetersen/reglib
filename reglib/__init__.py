@@ -94,7 +94,9 @@ class infosu(object):
         return utilities.add_classes(self.sid, self.pin, crn_list, self.schedule)
 
     # drop a course
-    def drop_classes(self, crn_list):
+    def drop_classes(self, crn_list, Next=False):
+        if Next:
+            return utilities.drop_classes(self.sid, self.pin, crn_list, self.next_schedule)
         return utilities.drop_classes(self.sid, self.pin, crn_list, self.schedule)
 
     def drop_all_classes(self):
