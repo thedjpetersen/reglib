@@ -34,23 +34,38 @@ def adjust_schedule_term(infosu_term):
 
     return year + term
 
-def format_term(term):
-    """ format yyyyxx term to Fxx, Wxx, Spxx, Suxx """
-
-    year = term[:4][-2:]
+def format_term(term, formal=False):
+    """ format yyyyxx term to Fxx, Wxx, Spxx, Suxx
+    or to Fall xxxx, Winter xxxx, Spring xxxx, Summer xxxx if formal """
+    year = term[:4]
     term = term[-2:]
-    if term == '00':
-        term = "Su"
-    elif term == '01':
-        term = "F"
-    elif term == '02':
-        term = "W"
-    elif term == '03':
-        term = "Sp"
-    elif term == '04':
-        term = "Su"
-      
-    return term + year
+    
+    if formal:
+        if term == '00':
+            term = "Summer "
+        elif term == '01':
+            term = "Fall "
+        elif term == '02':
+            term = "Winter "
+        elif term == '03':
+            term = "Spring "
+        elif term == '04':
+            term = "Summer "
+        return term + year
+    else:
+        year = term[:4][-2:]
+        if term == '00':
+            term = "Su"
+        elif term == '01':
+            term = "F"
+        elif term == '02':
+            term = "W"
+        elif term == '03':
+            term = "Sp"
+        elif term == '04':
+            term = "Su"
+        return term + year
+
 
 def to_next_term(current_term):
     """ get the next term in YYYYXX format with XX being term from 01 to 04 starting from fall and ending in summer (ex: 201103 is Spring 2011). new school year starts in the fall"""
