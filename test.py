@@ -48,8 +48,8 @@ reg_class = reglib.infosu('930608334', '121088')
 ###################
 permutations = reg_class.make_schedule(['fr 211', 'cs 160', 'cs 275', 'mth 231'])
 #print permutations
-for index, permutation in enumerate(permutations['combinations']):
-    print "Permutation " + str(index+1) + ": " + str([''.join(['(',course['type'],') ', course['department'], ' ', course['number'], ' ', course['crn']]) for course in permutation])
+#for index, permutation in enumerate(permutations['combinations']):
+#    print "Permutation " + str(index+1) + ": " + str([''.join(['(',course['type'],') ', course['department'], ' ', course['number'], ' ', course['crn']]) for course in permutation])
 print "\nPermutations: " + str(len(permutations['combinations']))
 #print reg_class.make_schedule(['cs 162', 'mth 111'], 'F12')
 

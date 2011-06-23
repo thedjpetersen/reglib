@@ -68,8 +68,10 @@ def make_schedule(list_of_classes, term, schedule):
         if index == 0:
             continue
         for inner_index, course in enumerate(permutation):
-            if class_search_conflict(course, permutation[inner_index-1]):
-                permutation.remove(permutation[inner_index-1])
+            for second_inner_index, each_course in enumerate(permutation):
+                if second_inner_index != inner_index:
+                    if class_search_conflict(course, permutation[second_inner_index]):
+                        permutation.remove(permutation[second_inner_index])
 
     return {"combinations" : permutations, "classes_possible" : len(class_search_results)}
 #    for permutation in permutations:
