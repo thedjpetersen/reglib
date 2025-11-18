@@ -23,7 +23,7 @@ class audit:
             goals = []
             for item in audit.xpath('Deginfo/Goal'):
                 goals.append(dict(item.items()))
-            
+
             temp_dict = dict(audit.xpath('Deginfo/DegreeData')[0].items())
             self.degree_data = {}
             self.degree_data['Level'] = temp_dict['Stu_levelLit']
@@ -108,7 +108,7 @@ class rule:
         self.rule_id = rule_items['Rule_id']
         self.node_type = rule_items['Node_type']
         self.node_id = rule_items['Node_id']
-        
+
         self.rules = []
         member_rules = rule.xpath('Rule')
         for each_rule in member_rules:

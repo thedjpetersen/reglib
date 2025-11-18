@@ -1,4 +1,4 @@
-from utilities import time_conflict 
+from .utilities import time_conflict
 
 def class_search_conflict(class1, class2):
     """ checks if two given classes coincide within the same time, depends on time_conflict """

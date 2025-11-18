@@ -1,1 +1,1 @@
-from transcript_class import Transcript
+from .transcript_class import Transcript

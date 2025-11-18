@@ -11,12 +11,12 @@ def drop_classes(original_html, crn_list):
     for element in course_table.find_class('dddefault'):
         try:
             crn = element.getchildren()[1]._value__get()
-            if crn: 
+            if crn:
                 infosu_crns.append(crn)
         except:
             pass
- 
-#    for element in [element.getchildren()[0]._value__get() for element in course_table.find_class('dddefault') if type(element.getchildren()[0]) is lxml.html.InputElement]: 
+
+#    for element in [element.getchildren()[0]._value__get() for element in course_table.find_class('dddefault') if type(element.getchildren()[0]) is lxml.html.InputElement]:
 #        if 'DUMMY' in element and len(temp_list) > 0:
 #            course_list.append(temp_list)
 #            temp_list = []
@@ -32,7 +32,7 @@ def drop_classes(original_html, crn_list):
                 action_id_list.append("action_id" + str(index+1)) # action_id starts at 1
                 break
 
-    
+
     # set each course to drop in the dropdown boxes (from value '' to 'DX')
     for action_id in action_id_list:
         html.get_element_by_id(action_id)._value__set('DX') # set to drop
@@ -40,6 +40,6 @@ def drop_classes(original_html, crn_list):
     form = html.forms[1]
     values = form.form_values()
     values.append(('REG_BTN', 'Submit Changes'))
-                
+
     return values
 

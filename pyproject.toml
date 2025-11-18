@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reglib"
+version = "0.2.0"
+description = "Library to interface with Oregon State's registration system"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "David Petersen", email = "thedjpetersen@gmail.com"}
+]
+keywords = ["osu", "registration", "oregon-state", "university"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "lxml>=4.9.0,<6.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/thedjpetersen/OSU-Registration"
+Repository = "https://github.com/thedjpetersen/OSU-Registration"
+Issues = "https://github.com/thedjpetersen/OSU-Registration/issues"
+
+[tool.setuptools]
+packages = ["reglib"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["reglib*"]
+exclude = ["tests*"]

@@ -8,7 +8,7 @@ def add_class(original_html, crn1, crn2=''):
     #return form.form_values().append(('REG_BTN', 'Submit Changes'))
     values = form.form_values()
     values.append(('REG_BTN', 'Submit Changes'))
-    return values 
+    return values
 
 def add_class_has_errors(original_html):
     html = lxml.html.fromstring(original_html)

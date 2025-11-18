@@ -1,6 +1,6 @@
-import fetch_html
-import parse_html
-from login import login
+from . import fetch_html
+from . import parse_html
+from .login import login
 import reglib
 
 def add_classes(sid, pin, crns, schedule):
@@ -10,7 +10,7 @@ def add_classes(sid, pin, crns, schedule):
     for crn_index in crns:
         crn = ''
         crn2 = ''
-    
+
         if 'list' in str(type(crn_index)):
             crn = crn_index[0]
             crn2 = crn_index[1]

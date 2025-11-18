@@ -1,1 +1,1 @@
-from major_requirements import audit
+from .major_requirements import audit

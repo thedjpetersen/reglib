@@ -1,6 +1,6 @@
-from browser_clone import header_values, opener
+from .browser_clone import header_values, opener
 import urllib
-import urllib2
+import urllib.request
 
 # DOESN'T WORK, perhaps wrong referer
 def setup_term_page():
@@ -8,7 +8,7 @@ def setup_term_page():
     select_term_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskflib.P_SelDefTerm'
     header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_GenMenu?name=bmenu.P_RegMnu'
 
-    request = urllib2.Request(select_term_url, headers=header_values)
+    request = urllib.request.Request(select_term_url, headers=header_values)
     response = opener.open(request)
     html = response.read()
     return html
@@ -20,10 +20,10 @@ def select_term(term):
     select_term_url = 'https://adminfo.ucsadm.oregonstate.edu/prod/bwskflib.P_SelDefTerm'
     header_values['Referer'] = 'https://adminfo.ucsadm.oregonstate.edu/prod/twbkwbis.P_GenMenu?name=bmenu.P_RegMnu'
 
-    form_data = urllib.urlencode({'term_in' : term})
-    request = urllib2.Request(select_term_url, form_data, headers=header_values)
+    form_data = urllib.parse.urlencode({'term_in' : term})
+    request = urllib.request.Request(select_term_url, form_data, headers=header_values)
     response = opener.open(request)
     html = response.read()
 
     return html
-    
+
