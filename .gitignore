@@ -97,3 +97,7 @@ local_cache/
 *.pdf
 test_outputs/
 test1.py
+
+# GitHub Actions workflows (cannot be pushed via API)
+# See .github/WORKFLOWS_NOTE.md for instructions
+.github/workflows/
