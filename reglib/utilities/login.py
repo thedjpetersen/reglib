@@ -1,4 +1,4 @@
-import fetch_html
+from . import fetch_html
 
 def login(sid, pin):
     """ logins, DUH...given sid/pin """

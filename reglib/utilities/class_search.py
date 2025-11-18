@@ -1,19 +1,19 @@
-import fetch_html
-import parse_html
+from . import fetch_html
+from . import parse_html
 
 def class_search(dep, num, term=''):
-        """ searches OSU course catalog and returns list of 
+        """ searches OSU course catalog and returns list of
         specified courses that are the same course """
-        
+
         html = fetch_html.class_search(dep, num)
         if not html:
             return None #no such course
 
         # Get a array of available classes
         classes = parse_html.class_search(html, dep, num)
-        if term is '':
+        if term == '':
             return classes
-        
+
         # Get classes from certain term
         else:
             list_of_classes = []
@@ -21,7 +21,7 @@ def class_search(dep, num, term=''):
                 if each_class['term'] == term:
                     #If the classes are in a certain term return them
                     list_of_classes.append(each_class)
-            if len(list_of_classes) is not 0:
+            if len(list_of_classes) != 0:
                 return list_of_classes
             else:
-                return None #no course for that term 
+                return None #no course for that term

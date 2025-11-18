@@ -1,13 +1,17 @@
-class Transcript(object):
+from functools import cmp_to_key
+from typing import Dict, List, Any
+
+
+class Transcript:
     """ course transcript includes list of classes taken, grades, # credits, gpa """
 
-    def __init__(self, html, grades, credits, gpa):
+    def __init__(self, html: str, grades: List[Dict[str, Any]], credits: Dict[str, Any], gpa: Dict[str, Any]) -> None:
         self.grades = grades
         self.sort_by_term()
-        self.credits = credits # dictionary (institution, transfer, overall) 
-        self.gpa = gpa # dictionary (osu ,transfer)
+        self.credits = credits  # dictionary (institution, transfer, overall)
+        self.gpa = gpa  # dictionary (osu, transfer)
 
-    def has_class(self, department, number):
+    def has_class(self, department: str, number: str) -> bool:
         """ returns true/false whether class has been taken regardless of passing """
 
         number = number.upper()
@@ -17,7 +21,7 @@ class Transcript(object):
                 return True
         return False
 
-    def has_passed_class(self, department, number):
+    def has_passed_class(self, department: str, number: str) -> bool:
         """ returns true/false whether a pass has been classed (c and above) """
 
         number = number.upper()
@@ -28,52 +32,52 @@ class Transcript(object):
                 return True
         return False
 
-    def grade_distribution(self):
-        """ returns dictionary of grades and their cardinality """       
-    
+    def grade_distribution(self) -> List[Dict[str, int]]:
+        """ returns dictionary of grades and their cardinality """
+
         grades_array = []
         for element in self.grades:
             grades_array.append(element['grade'])
-        
+
         seen = {}
         for item in grades_array:
-            if not item in seen: 
+            if item not in seen:
                 seen[item] = 1
                 continue
             seen[item] += 1
-        
-        grades_array = [{'A+': 0}, {'A':0}, {'A-': 0}, {'B+': 0}, {'B': 0}, {'B-': 0}, {'C+': 0}, {'C': 0}, {'C-': 0}, {'F': 0}, {'D N': 0}, {'W': 0}]
+
+        grades_array = [{'A+': 0}, {'A': 0}, {'A-': 0}, {'B+': 0}, {'B': 0}, {'B-': 0}, {'C+': 0}, {'C': 0}, {'C-': 0}, {'F': 0}, {'D N': 0}, {'W': 0}]
         for grade in grades_array:
             for letter in grade:
                 try:
                     grade[letter] = seen[letter]
-                except:
+                except KeyError:
                     grade[letter] = 0
         return grades_array
 
-    #David and Kevin sort - amazing
-    def sort_by_term(self):
-        self.grades = sorted(self.grades, cmp=self.compare)
+    # David and Kevin sort - amazing
+    def sort_by_term(self) -> None:
+        self.grades = sorted(self.grades, key=cmp_to_key(self.compare))
 
-    def compare(self, grade1, grade2):
-        terms = {'Fall':0, 'Winter':1, 'Spring':2, 'Summer':3}
+    def compare(self, grade1: Dict[str, Any], grade2: Dict[str, Any]) -> int:
+        terms = {'Fall': 0, 'Winter': 1, 'Spring': 2, 'Summer': 3}
         values1 = grade1['term'].split(' ')
         values2 = grade2['term'].split(' ')
-        if terms[values1[0]] > terms[values2[0]] or values1[1] > values2[1]: 
+        if terms[values1[0]] > terms[values2[0]] or values1[1] > values2[1]:
             return -1
         else:
             return 1
 
-    def group_compare(self, group1, group2):
-        terms = {'Fall':0, 'Winter':1, 'Spring':2, 'Summer':3}
-        values1 = group1.keys()[0].split(' ')
-        values2 = group2.keys()[0].split(' ')
-        if terms[values1[0]] > terms[values2[0]] or values1[1] > values2[1]: 
+    def group_compare(self, group1: Dict[str, Any], group2: Dict[str, Any]) -> int:
+        terms = {'Fall': 0, 'Winter': 1, 'Spring': 2, 'Summer': 3}
+        values1 = list(group1.keys())[0].split(' ')
+        values2 = list(group2.keys())[0].split(' ')
+        if terms[values1[0]] > terms[values2[0]] or values1[1] > values2[1]:
             return -1
         else:
             return 1
 
-    def group_by_term(self):
+    def group_by_term(self) -> List[Dict[str, List[Dict[str, Any]]]]:
         groups = {}
         for entry in self.grades:
             current_term = entry['term']
@@ -81,8 +85,8 @@ class Transcript(object):
                 groups[current_term].append(entry)
             else:
                 groups[current_term] = [entry]
-        
-        groups_array = [{key:value} for key,value in groups.iteritems()]
-        groups_array = sorted(groups_array, cmp=self.group_compare)
+
+        groups_array = [{key: value} for key, value in groups.items()]
+        groups_array = sorted(groups_array, key=cmp_to_key(self.group_compare))
 
         return groups_array

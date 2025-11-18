@@ -1,6 +1,7 @@
-import utilities
+from . import utilities
 
-class infosu(object):
+
+class infosu:
 
     def __getattribute__(self, name):
         try:
@@ -8,7 +9,7 @@ class infosu(object):
         except AttributeError:
             if name == 'schedule':
                 self.get_current_schedule()
-                return self.schedule 
+                return self.schedule
             if name == 'transcript':
                 self.get_transcript()
                 return self.transcript
@@ -16,8 +17,8 @@ class infosu(object):
                 self.get_major_requirements()
                 return self.audit
             if name =='next_schedule':
-                self.get_next_schedule() 
-                return self.next_schedule   
+                self.get_next_schedule()
+                return self.next_schedule
 
             raise
 
@@ -26,10 +27,10 @@ class infosu(object):
         self.sid = sid      #this is our student id number
         self.pin = pin      #this is our student pin
         self.login_number = 2       #this variable will be used when we are trying to login
-        
+
         self.login()    #Set the setid cookie
         successful_login = self.login()
-        
+
         #If our users credentials were not correct raise an exception to tell them
         if not successful_login: raise Exception("Invalid credentials")
         if not lazy_load:
@@ -49,27 +50,27 @@ class infosu(object):
     # Function to set our schedule variable
     def get_current_schedule(self):
         # login again to make sure we can select a different term
-        self.login() 
-        self.login() 
+        self.login()
+        self.login()
         self.schedule = utilities.get_schedule(self.sid, self.pin, False)
 
     # get schedule for next term
     def get_next_schedule(self):
         # login again to make sure we can select a different term
-        self.login() 
-        self.login() 
-        self.next_schedule = utilities.get_schedule(self.sid, self.pin, True) 
+        self.login()
+        self.login()
+        self.next_schedule = utilities.get_schedule(self.sid, self.pin, True)
 
     # This function searches for classes
     # It can take a term as a parameter as well
     def class_search(self, dep, num, term=''):
         return utilities.class_search(dep, num, term)
 
-    # This function searches for classes that don't conflict with your 
+    # This function searches for classes that don't conflict with your
     # current schedule
     def class_search_schedule(self, dep, num):
         return utilities.class_search_schedule(dep, num, self.schedule)
-        
+
     def make_schedule(self, list_of_classes, term = ''):
         return utilities.make_schedule(list_of_classes, term, self.schedule)
 
@@ -88,7 +89,7 @@ class infosu(object):
     # Function to add class to a schedule
     def add_class(self, crn1, crn2=''):
         return utilities.add_class(self.sid, self.pin, crn1, crn2, self.schedule)
-    
+
     # add multiple courses via list, lecture/lab-rec pairs list within the list
     def add_classes(self, crn_list):
         return utilities.add_classes(self.sid, self.pin, crn_list, self.schedule)
@@ -104,7 +105,7 @@ class infosu(object):
         for course in self.schedule.current_classes:
             crn_list.append(course['crn'])
         self.drop_classes(crn_list)
-        
-    
+
+
 
 

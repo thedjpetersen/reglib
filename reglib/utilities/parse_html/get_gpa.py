@@ -2,7 +2,7 @@ import lxml.html
 
 def get_gpa(original_html):
     html = lxml.html.fromstring(original_html)
-  
+
     osu_gpa = 0
     transfer_gpa = 0
     for element in html.find_class("ddlabel"):
@@ -12,5 +12,5 @@ def get_gpa(original_html):
             transfer_gpa = element.getnext().getnext().getnext().getnext().getchildren()[0].text_content()
 
     return {'osu_gpa': osu_gpa, 'transfer_gpa': transfer_gpa}
-             
-     
+
+

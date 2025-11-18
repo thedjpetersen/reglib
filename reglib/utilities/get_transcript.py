@@ -1,8 +1,8 @@
-import transcript
-import parse_html
-import fetch_html
-from login import login
- 
+from . import transcript
+from . import parse_html
+from . import fetch_html
+from .login import login
+
 def get_transcript(sid, pin):
     """ get transcript including list of classes taken, grade, and current gpa """
 
@@ -12,7 +12,7 @@ def get_transcript(sid, pin):
 
         #The transcript page url
         html = fetch_html.get_transcript()
-        
+
         if parse_html.get_page_title(html) != 'Login':
             # We set the transcript variable to a instance of the transcript class
             grades = parse_html.get_grades(html)

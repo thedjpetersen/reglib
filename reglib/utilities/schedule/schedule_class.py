@@ -1,17 +1,20 @@
-class Schedule(object):
+from typing import Dict, List, Any
+
+
+class Schedule:
     """ dictionary with days as key and course list as values """
 
-    def __init__(self, html, current_classes, current_term):
-       """ gets list of current courses and returns as a dictionary
-       with days as the key and courses as the values """
+    def __init__(self, html: str, current_classes: List[Dict[str, Any]], current_term: str) -> None:
+        """ gets list of current courses and returns as a dictionary
+        with days as the key and courses as the values """
 
-       self.current_classes = current_classes
-       self.current_term = current_term
-       self.schedule = {'Monday':[], 'Tuesday':[], 'Wednesday':[], 'Thursday':[], 'Friday':[]}
+        self.current_classes = current_classes
+        self.current_term = current_term
+        self.schedule = {'Monday': [], 'Tuesday': [], 'Wednesday': [], 'Thursday': [], 'Friday': []}
 
-       for entry in self.current_classes:
+        for entry in self.current_classes:
             for day in entry['days']:
-                class_data = [entry['times'], entry['location'], (' ').join([entry['department'], entry['number']]), entry['type']]
+                class_data = [entry['times'], entry['location'], ' '.join([entry['department'], entry['number']]), entry['type']]
                 if day == 'M':
                     self.schedule['Monday'].append(class_data)
                 if day == 'T':
@@ -22,11 +25,11 @@ class Schedule(object):
                     self.schedule['Thursday'].append(class_data)
                 if day == 'F':
                     self.schedule['Friday'].append(class_data)
-            
+
             for day in self.schedule:
                 self.schedule[day].sort()
 
-    def has_class(self, department, number):
+    def has_class(self, department: str, number: str) -> bool:
         """ returns true/false whether course is in schedule """
 
         for each_class in self.current_classes:

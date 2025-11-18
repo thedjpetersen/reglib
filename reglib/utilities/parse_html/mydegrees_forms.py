@@ -8,8 +8,8 @@ def mydegrees_form_mangler(original_html):
     html = lxml.html.fromstring(original_html)
     big_form = dict(html.forms[7].form_values())
     big_form['SCRIPT'] = 'SD2AUDCON'
-    return big_form 
-   
+    return big_form
+
 def mydegrees_final_form(original_html):
     html = lxml.html.fromstring(original_html)
     form = dict(html.forms[0].form_values())

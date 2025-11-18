@@ -1,6 +1,6 @@
-import fetch_html
-import parse_html
-from login import login
+from . import fetch_html
+from . import parse_html
+from .login import login
 
 def drop_classes(sid, pin, crn_list, schedule):
     """ drops a class, takes a crn or two for lec/lab """
@@ -18,11 +18,11 @@ def drop_classes(sid, pin, crn_list, schedule):
         else:
             login(sid, pin)
             continue
-        
+
         html = fetch_html.add_drop_page(form_data)
 
-        # Gets list of action_ids which are form values to submit 
+        # Gets list of action_ids which are form values to submit
         values = parse_html.drop_classes(html, crn_list)
         html = fetch_html.drop_classes(values)
-        
-    return parse_html.add_class_has_errors(html) 
+
+    return parse_html.add_class_has_errors(html)

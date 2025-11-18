@@ -1,7 +1,7 @@
-import fetch_html
-import parse_html
-import mydegrees
-from login import login
+from . import fetch_html
+from . import parse_html
+from . import mydegrees
+from .login import login
 
 def get_major_requirements(sid, pin):
     """ use mydegrees to get various requirements to fulfill major such as
